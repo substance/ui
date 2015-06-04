@@ -15,8 +15,6 @@ var DocumentContemplatorMixin = {
   contextTypes: {
     backend: React.PropTypes.object.isRequired,
     notifications: React.PropTypes.object.isRequired,
-    // htmlImporter: React.PropTypes.object.isRequired,
-    // htmlExporter: React.PropTypes.object.isRequired
   },
 
   childContextTypes: {
@@ -34,7 +32,6 @@ var DocumentContemplatorMixin = {
       getHighlightedNodes: this.getHighlightedNodes,
       getHighlightsForTextProperty: this.getHighlightsForTextProperty,
     };
-    // console.log('context', context);
     return context;
   },
 
@@ -58,16 +55,17 @@ var DocumentContemplatorMixin = {
   // ----------------
 
   componentDidMount: function() {
-    // if (!window.devMode) {
-    //   setInterval(function() {
-    //     this.requestAutoSave();
-    //   }.bind(this), 10000);
-    // }
-    // var rootElement = this.getDOMNode();
-    // var $clipboard = $(rootElement).find('.clipboard');
-    // this.clipboard = new Substance.Surface.Clipboard(this, $clipboard[0],
-    //   this.context.htmlImporter, this.context.htmlExporter);
-    // this.clipboard.attach(rootElement);
+    var domNode = this.getDOMNode();
+
+    $(domNode).on('click', '.container-annotation', this.handleReferenceToggle);
+    $(domNode).on('click', '.annotation', this.handleReferenceToggle);
+  },
+
+  handleReferenceToggle: function(e) {
+    e.preventDefault();
+    var annotationId = e.currentTarget.dataset.id;
+    console.log('yay');
+    this.extensionManager.handleAnnotationToggle(annotationId);
   },
 
   componentWillMount: function() {
@@ -152,7 +150,7 @@ var DocumentContemplatorMixin = {
       return $$('div', null, "No panels are registered");
     }
     return panelElement;
-  },
+  }
 
 };
 

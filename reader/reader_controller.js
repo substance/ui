@@ -8,7 +8,6 @@ var ExtensionManager = require("../extension_manager");
 
 var coreTools = require("./tools");
 
-
 // Mixin with helpers to implement a ReaderController
 // ----------------
 
@@ -68,9 +67,10 @@ WriterController.Prototype = function() {
 
   };
 
+
   this._onSelectionChanged = function(sel) {
     // var modules = this.getModules();
-    this.extensionManager.handleSelectionChange(sel);
+    // this.extensionManager.handleSelectionChange(sel);
     // Notify all registered tools about the selection change (if enabled)
     this.toolManager.updateTools(sel, this.getSurface());
   };

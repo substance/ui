@@ -61,6 +61,10 @@ ExtensionManager.Prototype = function() {
     return this.handle("handleSelectionChange", sel);
   };
 
+  this.handleAnnotationToggle = function(annotationId) {
+    return this.handle("handleAnnotationToggle", annotationId);
+  };
+
   this.getActivePanelElement = function() {
     var activePanel = this.handle("handleContextPanelCreation");
     return activePanel || [];
