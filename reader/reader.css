@@ -35,12 +35,12 @@
   background: #F8F8F8;
 }
 
-.writer-component .context-toggles {
+.reader-component .context-toggles {
   height: 40px;
   border-bottom: 1px solid #ddd;
 }
 
-.writer-component .context-toggles a.toggle-context {
+.reader-component .context-toggles a.toggle-context {
   display: block;
   float: left;
   height: 40px;
@@ -51,7 +51,7 @@
   font-weight: 600;
 }
 
-.writer-component .context-toggles .dialog {
+.reader-component .context-toggles .dialog {
   float: right;
   display: block;
   height: 40px;
@@ -65,29 +65,29 @@
   border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
-.writer-component .context-toggles .dialog.editSubjectReference {
+.reader-component .context-toggles .dialog.editSubjectReference {
   background: rgba(145, 187, 4, 1);
 }
 
-.writer-component .context-toggles .dialog.tagentity {
+.reader-component .context-toggles .dialog.tagentity {
   background: rgba(11, 157, 217, 1);
 }
 
-.writer-component .context-toggles .dialog .close-dialog {
+.reader-component .context-toggles .dialog .close-dialog {
   padding: 5px 10px;
   color: rgba(255,255,255,0.4);
 }
 
-.writer-component .context-toggles .dialog .close-dialog:hover {
+.reader-component .context-toggles .dialog .close-dialog:hover {
   color: rgba(255,255,255, 1);
 }
 
-.writer-component .context-toggles a.toggle-context:hover {
+.reader-component .context-toggles a.toggle-context:hover {
   background: #eee;
   border-bottom: 1px solid #bbb;
 }
 
-.writer-component .context-toggles a.toggle-context.active {
+.reader-component .context-toggles a.toggle-context.active {
   background: #eee;
   border-bottom: 1px solid #444;
 }
