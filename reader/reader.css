@@ -2,23 +2,20 @@
 ---------------------------------
 */
 
-
 #container .panel-wrapper {
   overflow: auto;
 }
 
-
-/* Writer Component
+/* Reader Component
 -----------------------------------------------------*/
 
-.writer-component {
+.reader-component {
   position: absolute;
   left: 0px;
   right: 0px;
   overflow: hidden;
-  /*bottom: 25px;*/
-  bottom: 25px;
-  top: 30px;
+  bottom: 0px;
+  top: 0px;
 }
 
 .main-container {
@@ -37,7 +34,6 @@
   height: 100%;
   background: #F8F8F8;
 }
-
 
 .writer-component .context-toggles {
   height: 40px;
@@ -149,7 +145,6 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 39px;
-  /*color: white;*/
   float: left;
 }
 
@@ -353,7 +348,7 @@
 
 .content-panel-component {
   position: absolute;
-  top: 40px;
+  top: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -440,7 +435,6 @@
   padding: 0 20px;
 }
 
-
 .status-bar-component .message {
   float: right;
 }
@@ -452,18 +446,6 @@
 
 .content-editor-component .content-node.text {
   padding-bottom: 20px;
-}
-
-/* Text Annotations
------------------------------------------------------*/
-
-
-.annotation.strong {
-  font-weight: bold;
-}
-
-.annotation.emphasis {
-  font-style: italic;
 }
 
 
@@ -478,8 +460,6 @@
   background-color: rgba(145, 187, 4, 0.2);
 }
 
-
-
 /* Selection style sheets
 -----------------------------------------------------*/
 
@@ -491,8 +471,3 @@
 ::-moz-selection {
   background: rgba(0,0,0,0.1);
 }
-
-
-
-
-
