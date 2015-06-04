@@ -110,7 +110,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
     var doc = app.doc;
 
     var componentFactory = this.context.componentFactory;
-    var ContainerClass = componentFactory.get("container");
+    var ContainerClass = componentFactory.get("content_container");
 
     return $$(ContainerClass, {
       doc: doc,
