@@ -22,6 +22,10 @@ var SaveTool = React.createClass({
     });
   },
 
+  handleClick: function(e) {
+    e.preventDefault(e);
+  },
+  
   handleMouseDown: function(e) {
     e.preventDefault();
     var backend = this.context.backend;
@@ -62,6 +66,7 @@ var SaveTool = React.createClass({
       href: "#",
       dangerouslySetInnerHTML: {__html: '<i class="fa fa-save"></i>'},
       title: 'Save',
+      onClick: this.handleClick,
       onMouseDown: this.handleMouseDown
     });
   }

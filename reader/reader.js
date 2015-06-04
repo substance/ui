@@ -3,7 +3,7 @@ var $$ = React.createElement;
 
 var Substance = require("substance");
 var _ = require("substance/helpers");
-var ContentPanel = require("./content_panel");
+var ContentPanel = require("../content_panel");
 var ReaderController = require("./reader_controller");
 
 // DocumentContemplatorMixin
