@@ -4,55 +4,13 @@ var $$ = React.createElement;
 var Substance = require("substance");
 var _ = require("substance/helpers");
 var ContentPanel = require("../content_panel");
-var ReaderController = require("./reader_controller");
+var ReaderControllerMixin = require("./reader_controller_mixin");
 
-// DocumentContemplatorMixin
-// -------------------------
-// 
-// Aka Common ReaderWriter Interface
 
-var DocumentContemplatorMixin = {
-  contextTypes: {
-    backend: React.PropTypes.object.isRequired,
-    notifications: React.PropTypes.object.isRequired,
-  },
+// The Substance Reader Component
+// ----------------
 
-  childContextTypes: {
-    // used by text properties to render 'active' annotations
-    // For active container annotations annotation fragments are inserted
-    // which can be used to highlight the associated range
-    app: React.PropTypes.object,
-    getHighlightedNodes: React.PropTypes.func,
-    getHighlightsForTextProperty: React.PropTypes.func
-  },
-
-  getChildContext: function() {
-    var context = {
-      app: this,
-      getHighlightedNodes: this.getHighlightedNodes,
-      getHighlightsForTextProperty: this.getHighlightsForTextProperty,
-    };
-    return context;
-  },
-
-  // Internal methods
-  // ----------------
-
-  getDocument: function() {
-    return this.props.doc;
-  },
-
-  getConfig: function() {
-    return this.props.config;
-  },
-
-  // Problematic
-  getInitialState: function() {
-    return {"contextId": "toc"};
-  },
-
-  // Events
-  // ----------------
+var ReaderMixin = _.extend({}, Substance.EventEmitter.prototype, ReaderControllerMixin, {
 
   componentDidMount: function() {
     var domNode = this.getDOMNode();
@@ -67,97 +25,6 @@ var DocumentContemplatorMixin = {
     console.log('yay');
     this.extensionManager.handleAnnotationToggle(annotationId);
   },
-
-  componentWillMount: function() {
-    this._initializeController();
-  },
-
-  componentWillUnmount: function() {
-    // this.clipboard.detach(this.getDOMNode());
-  },
-
-  shouldComponentUpdate: function(nextProps, nextState) {
-    var sprevState = JSON.stringify(this.state);
-    var snextState = JSON.stringify(nextState);
-    if (Substance.isEqual(sprevState, snextState)) {
-      return false;
-    }
-    return true;
-  },
-
-  // E.g. when a tool requests a context switch
-  handleContextSwitch: function(contextId) {
-    this.replaceState({
-      contextId: contextId
-    });
-  },
-
-  handleCloseDialog: function(e) {
-    e.preventDefault();
-    console.log('handling close');
-    this.replaceState(this.getInitialState());
-  },
-
-  // Triggered by Writer UI
-  handleContextToggle: function(e) {
-    e.preventDefault();
-    var newContext = $(e.currentTarget).attr("data-id");
-    this.handleContextSwitch(newContext);
-  },
-
-
-  // Rendering
-  // ----------------
-
-  // Toggles for explicitly switching between context panels
-  createContextToggles: function() {
-    var panels = this.getPanels();
-
-    var contextId = this.state.contextId;
-    var self = this;
-
-    var panelComps = panels.map(function(panelClass) {
-      // We don't show inactive stuff here
-      if (panelClass.isDialog && panelClass.contextId !== contextId) return null;
-
-      var className = ["toggle-context"];
-      if (panelClass.contextId === contextId) {
-        className.push("active");
-      }
-
-      if (panelClass.isDialog) {
-        return $$('div');
-      } else {
-        return $$('a', {
-          className: className.join(" "),
-          href: "#",
-          key: panelClass.contextId,
-          "data-id": panelClass.contextId,
-          onClick: self.handleContextToggle,
-          dangerouslySetInnerHTML: {__html: '<i class="fa '+panelClass.icon+'"></i> '+panelClass.displayName}
-        });
-      }
-    });
-
-    return $$('div', {className: "context-toggles"},
-      Substance.compact(panelComps)
-    );
-  },
-
-  createContextPanel: function() {
-    var panelElement = this.getActivePanelElement();
-    if (!panelElement) {
-      return $$('div', null, "No panels are registered");
-    }
-    return panelElement;
-  }
-
-};
-
-// The Substance Reader Component
-// ----------------
-
-var ReaderMixin = _.extend({}, ReaderController.prototype, Substance.EventEmitter.prototype, DocumentContemplatorMixin, {
 
   render: function() {
     return $$('div', { className: 'reader-component', onKeyDown: this.handleApplicationKeyCombos},
