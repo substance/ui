@@ -34,7 +34,6 @@ var WriterMixin = _.extend({}, WriterController.prototype, Substance.EventEmitte
       getHighlightedNodes: this.getHighlightedNodes,
       getHighlightsForTextProperty: this.getHighlightsForTextProperty,
     };
-    // console.log('context', context);
     return context;
   },
 
@@ -203,7 +202,6 @@ var WriterMixin = _.extend({}, WriterController.prototype, Substance.EventEmitte
 });
 
 // Create React class
-
 var Writer = React.createClass({
   mixins: [WriterMixin],
   displayName: "Writer",

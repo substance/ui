@@ -19,9 +19,6 @@ WriterController.Prototype = function() {
     throw new Error('Contract: A Writer must implement getDocument()');
   };
 
-  this.getWriterState = function() {
-    throw new Error('Contract: A Writer must implement getWriterState()');
-  };
 
   // Internal Methods
   // ----------------------
