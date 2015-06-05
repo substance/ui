@@ -192,6 +192,7 @@
 }
 
 .content-tools-component .tools a.tool {
+  font-size: 12px;
   display: block;
   float: left;
   height: 30px;

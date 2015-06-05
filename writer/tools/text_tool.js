@@ -59,7 +59,6 @@ var TextTool = React.createClass({
   },
 
   disableTool: function() {
-    console.log('tool gets disabled');
     this.replaceState({
       active: false
     });
