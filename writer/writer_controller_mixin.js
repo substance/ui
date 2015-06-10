@@ -16,18 +16,6 @@ var WriterControllerMixin = _.extend({}, DocumentController, {
   // Get all available tools from core and extensions
   getTools: function() {
     return coreTools.concat(this.extensionManager.getTools());
-  },
-
-  undo: function() {
-    if (this.doc.done.length > 0) {
-      this.doc.undo();
-    }
-  },
-
-  redo: function() {
-    if (this.doc.undone.length > 0) {
-      this.doc.redo();
-    }
   }
 });
 

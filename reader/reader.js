@@ -5,7 +5,7 @@ var Substance = require("substance");
 var _ = require("substance/helpers");
 var ContentPanel = require("../content_panel");
 var ReaderControllerMixin = require("./reader_controller_mixin");
-
+var ContentTools = require("../content_tools");
 
 // The Substance Reader Component
 // ----------------
@@ -22,13 +22,13 @@ var ReaderMixin = _.extend({}, Substance.EventEmitter.prototype, ReaderControlle
   handleReferenceToggle: function(e) {
     e.preventDefault();
     var annotationId = e.currentTarget.dataset.id;
-    console.log('yay');
     this.extensionManager.handleAnnotationToggle(annotationId);
   },
 
   render: function() {
-    return $$('div', { className: 'reader-component', onKeyDown: this.handleApplicationKeyCombos},
+    return $$('div', {className: 'reader-component', onKeyDown: this.handleApplicationKeyCombos},
       $$('div', {className: "main-container"},
+        $$(ContentTools),
         $$(ContentPanel)
       ),
       $$('div', {className: "resource-container"},
@@ -40,7 +40,18 @@ var ReaderMixin = _.extend({}, Substance.EventEmitter.prototype, ReaderControlle
 
   // return true when you handled a key combo
   handleApplicationKeyCombos: function(e) {
+    console.log('Handle keycombos');
     var handled = false;
+    
+    if (e.keyCode === 90 && (e.metaKey||e.ctrlKey)) {
+      if (e.shiftKey) {
+        this.redo();
+      } else {
+        this.undo();
+      }
+      handled = true;
+    }
+
     // Reset to default state
     if (e.keyCode === 27) {
       this.replaceState(this.getInitialState());

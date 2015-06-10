@@ -14,17 +14,6 @@ var $$ = React.createElement;
 
 var DocumentControllerMixin = {
 
-  // Interface
-  // ----------------------
-
-  getTools: function() {
-    throw new Error('Contract: A DocumentController must implement getTools()');
-  },
-
-  getDocument: function() {
-    throw new Error('Contract: A DocumentController must implement getDocument()');
-  },
-
   // Internal Methods
   // ----------------------
 
@@ -68,6 +57,8 @@ var DocumentControllerMixin = {
   _onDocumentChanged: function(change, info) {
     this.doc.__dirty = true;
     var notifications = this.context.notifications;
+    
+    window.myChange = change;
 
     notifications.addMessage({
       type: "info",
@@ -258,6 +249,18 @@ var DocumentControllerMixin = {
     return annotation;
   },
 
+  undo: function() {
+    if (this.doc.done.length > 0) {
+      this.doc.undo();
+    }
+  },
+
+  redo: function() {
+    if (this.doc.undone.length > 0) {
+      this.doc.redo();
+    }
+  },
+
   // React.js specific
   // ----------------------
 
@@ -316,6 +319,7 @@ var DocumentControllerMixin = {
     var sprevState = JSON.stringify(this.state);
     var snextState = JSON.stringify(nextState);
     if (Substance.isEqual(sprevState, snextState)) {
+      console.log('skipped update');
       return false;
     }
     return true;
@@ -383,7 +387,7 @@ var DocumentControllerMixin = {
           key: panelClass.contextId,
           "data-id": panelClass.contextId,
           onClick: self.handleContextToggle,
-          dangerouslySetInnerHTML: {__html: '<i class="fa '+panelClass.icon+'"></i> '+panelClass.displayName}
+          dangerouslySetInnerHTML: {__html: '<i class="fa '+panelClass.icon+'"></i> <span class="label">'+panelClass.displayName+'</span>'}
         });
       }
     });

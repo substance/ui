@@ -3,7 +3,7 @@ var $$ = React.createElement;
 
 var Substance = require("substance");
 var _ = require("substance/helpers");
-var ContentTools = require("./content_tools");
+var ContentTools = require("../content_tools");
 var ContentPanel = require("../content_panel");
 var WriterControllerMixin = require("./writer_controller_mixin");
 var StatusBar = require("./status_bar");

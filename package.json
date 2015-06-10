@@ -1,11 +1,15 @@
 {
   "name": "substance-ui",
   "version": "0.1.0",
-  "description": "",
-  "scripts": {
-  },
+  "description": "Substance user interface components (built on React.js)",
+  "scripts": {},
   "author": "",
   "license": "MIT",
-  "dependencies": {
-  }
+  "dependencies": {},
+  "readme": "# ui\nSubstance user interface components (built on React.js)\n",
+  "readmeFilename": "README.md",
+  "_id": "substance-ui@0.1.0",
+  "_shasum": "40d0e38ca96ece125d49f4451fe6a0a8814e18dd",
+  "_resolved": "git+https://github.com/substance/ui#f72d1322d6ad09f5cbc9792b4b9c9b92c3ee6c88",
+  "_from": "substance-ui@git+https://github.com/substance/ui#master"
 }
