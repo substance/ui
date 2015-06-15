@@ -301,6 +301,7 @@
 .content-panel-component .panel-content-inner {
   position: relative;
   padding: 40px;
+  padding-right: 80px;
 }
 
 .content-panel-component .document-title {
