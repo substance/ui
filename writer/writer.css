@@ -2,7 +2,6 @@
 ---------------------------------
 */
 
-
 #container .panel-wrapper {
   overflow: auto;
 }
@@ -301,19 +300,19 @@
 
 .content-panel-component .panel-content-inner {
   position: relative;
+  padding: 40px;
+  padding-right: 80px;
 }
 
 .content-panel-component .document-title {
-  padding: 40px 40px;
-  padding-bottom: 0px;
+  padding-bottom: 40px;
   font-size: 28px;
   font-weight: 600;
   line-height: 30px;
 }
 
 .content-panel-component .container-node.content .nodes {
-  padding: 40px;
-  padding-right: 60px;
+
 }
 
 .content-panel-component .container-node.content .nodes > .content-node.paragraph {
@@ -494,8 +493,5 @@
 ::-moz-selection {
   background: rgba(0,0,0,0.1);
 }
-
-
-
 
 
