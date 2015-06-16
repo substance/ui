@@ -14,11 +14,17 @@ var $$ = React.createElement;
 
 var DocumentControllerMixin = {
 
+  getDefaultProps: function() {
+    return {
+      contentContainer: 'content'
+    };
+  },
+
   // Internal Methods
   // ----------------------
 
   _initializeController: function() {
-    
+
     // We need to do this manually since we can't call the EventEmitter constructor function
     this.__events__ = {};
 
@@ -57,7 +63,7 @@ var DocumentControllerMixin = {
   _onDocumentChanged: function(change, info) {
     this.doc.__dirty = true;
     var notifications = this.context.notifications;
-    
+
     window.myChange = change;
 
     notifications.addMessage({

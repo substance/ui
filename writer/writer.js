@@ -17,7 +17,7 @@ var WriterMixin = _.extend({}, WriterControllerMixin, Substance.EventEmitter.pro
     return $$('div', { className: 'writer-component', onKeyDown: this.handleApplicationKeyCombos},
       $$('div', {className: "main-container"},
         $$(ContentTools),
-        $$(ContentPanel)
+        $$(ContentPanel, {containerId: this.props.contentContainer})
       ),
       $$('div', {className: "resource-container"},
         this.createContextToggles(),

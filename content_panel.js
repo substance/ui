@@ -12,6 +12,12 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
     componentFactory: React.PropTypes.object.isRequired,
   },
 
+  getDefautlProps: function() {
+    return {
+      containerId: 'content'
+    };
+  },
+
   // Since component gets rendered multiple times we need to update
   // the scrollbar and reattach the scroll event
   componentDidMount: function() {
@@ -114,7 +120,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
 
     return $$(ContentContainerClass, {
       doc: doc,
-      node: doc.get("content"),
+      node: doc.get(this.props.containerId),
       ref: "contentEditor"
     });
   },
