@@ -59,7 +59,7 @@ var StatusBar = React.createClass({
     }
 
     return $$("div", {className: classNames.join(" ")},
-      $$("div", {className: "document-status"}, this.props.doc.get('document').title),
+      $$("div", {className: "document-status"}, this.props.doc.getDocumentMeta().title),
       notificationsEl
     );
   }
