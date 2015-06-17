@@ -9,7 +9,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
 
   contextTypes: {
     app: React.PropTypes.object.isRequired,
-    componentFactory: React.PropTypes.object.isRequired,
+    componentRegistry: React.PropTypes.object.isRequired,
   },
 
   getDefautlProps: function() {
@@ -115,8 +115,12 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
     var app = this.context.app;
     var doc = app.doc;
 
-    var componentFactory = this.context.componentFactory;
-    var ContentContainerClass = componentFactory.get("content_container");
+    var componentRegistry = this.context.componentRegistry;
+    // FIXME: this is called getContentEditor() but requires 'content_container'
+    var ContentContainerClass = componentRegistry.get("content_container");
+    if (!ContentContainerClass) {
+      ContentContainerClass = componentRegistry.get("content_editor")
+    }
 
     return $$(ContentContainerClass, {
       doc: doc,

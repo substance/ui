@@ -48,7 +48,25 @@ var DocumentControllerMixin = {
       isToolEnabled: this.isToolEnabled
     });
 
-    this.extensionManager = new ExtensionManager(config.extensions, this);
+    // Note: we are treating basics as extension internally
+    var basics = {
+      name: "_basics",
+      components: config.components || {},
+      panels: config.panels || [],
+      stateHandlers: config.stateHandlers || {},
+      tools: config.tools || []
+    };
+    var extensions = [basics].concat(config.extensions);
+
+    this.extensionManager = new ExtensionManager(extensions, this);
+
+    var componentRegistry = new Substance.Registry();
+    _.each(extensions, function(extension) {
+      _.each(extension.components, function(ComponentClass, name) {
+        componentRegistry.add(name, ComponentClass);
+      });
+    });
+    this.componentRegistry = componentRegistry;
   },
 
   _transactionStarted: function(tx) {
@@ -283,7 +301,8 @@ var DocumentControllerMixin = {
     // which can be used to highlight the associated range
     app: React.PropTypes.object,
     getHighlightedNodes: React.PropTypes.func,
-    getHighlightsForTextProperty: React.PropTypes.func
+    getHighlightsForTextProperty: React.PropTypes.func,
+    componentRegistry: React.PropTypes.object,
   },
 
   getChildContext: function() {
@@ -291,6 +310,7 @@ var DocumentControllerMixin = {
       app: this,
       getHighlightedNodes: this.getHighlightedNodes,
       getHighlightsForTextProperty: this.getHighlightsForTextProperty,
+      componentRegistry: this.componentRegistry
     };
     return context;
   },
