@@ -14,9 +14,10 @@ var StatusBar = require("./status_bar");
 var WriterMixin = _.extend({}, WriterControllerMixin, Substance.EventEmitter.prototype, {
 
   render: function() {
+    var ContentToolbar = this.componentRegistry.get('content_toolbar') || ContentTools;
     return $$('div', { className: 'writer-component', onKeyDown: this.handleApplicationKeyCombos},
       $$('div', {className: "main-container"},
-        $$(ContentTools),
+        $$(ContentToolbar),
         $$(ContentPanel, {containerId: this.props.contentContainer})
       ),
       $$('div', {className: "resource-container"},

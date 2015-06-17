@@ -68,11 +68,13 @@ var DocumentControllerMixin = {
 
     var toolRegistry = new Substance.Surface.ToolRegistry();
     _.each(extensions, function(extension) {
-      // FIXME: after Tool refactor this will be 'tools'
-      _.each(extension._tools, function(ToolClass) {
-        toolRegistry.registerTool(ToolClass);
-      });
-    });
+      _.each(extension.tools, function(ToolClass, name) {
+        toolRegistry.add(name, new ToolClass({
+          app: this,
+          doc: doc
+        }));
+      }, this);
+    }, this);
     this.toolRegistry = toolRegistry;
   },
   _transactionStarted: function(tx) {
@@ -113,6 +115,7 @@ var DocumentControllerMixin = {
     this.extensionManager.handleSelectionChange(sel);
     var surface = this.getSurface();
     this.toolRegistry.each(function(tool) {
+      // console.log('Updating tool', tool.constructor.static.name, surface, sel);
       tool.update(surface, sel);
     }, this);
   },
@@ -348,6 +351,8 @@ var DocumentControllerMixin = {
   },
 
   componentWillUnmount: function() {
+    // some tools might need to get disposed
+    this.toolRegistry.dispose();
     this.clipboard.detach(this.getDOMNode());
   },
 
