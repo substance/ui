@@ -28,7 +28,6 @@ var ToolComponent = React.createClass({
   },
 
   onToolstateChanged: function(toolState, tool, oldState) {
-    console.log('ToolComponent: toolstate changed', toolState, tool, oldState);
     this.replaceState(toolState);
   },
 
