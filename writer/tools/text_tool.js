@@ -31,7 +31,7 @@ var TextTool = React.createClass({
   componentWillMount: function() {
     var app = this.context.app;
     var toolManager = app.toolManager;
-    toolManager.registerTool(this, "text");
+    //toolManager.registerTool(this, "text");
   },
 
   handleClick: function(e) {
@@ -125,7 +125,7 @@ var TextTool = React.createClass({
         onClick: this.handleClick
       }, "No selection");
     }
-      
+
     var availableTextTypes = [];
     if (this.state.expanded) {
       availableTextTypes = _.map(TEXT_TYPES, function(textType, textTypeId) {
