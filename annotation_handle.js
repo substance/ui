@@ -2,7 +2,6 @@
 
 var Substance = require('substance');
 var View = require('./view');
-var DomSelection = Substance.Surface.DomSelection;
 
 var AnnotationHandle = View.extend({
   displayName: "AnnotationHandle",
