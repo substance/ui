@@ -3,7 +3,6 @@ var Document = Substance.Document;
 var Selection = Document.Selection;
 var _ = require("substance/helpers");
 
-var ToolManager = require("substance").Surface.ToolManager;
 var Highlight = require("./text_property").Highlight;
 var ExtensionManager = require("./extension_manager");
 
@@ -44,10 +43,6 @@ var DocumentControllerMixin = {
       'document:changed': this._onDocumentChanged
     });
 
-    this.toolManager = new ToolManager(this.doc, {
-      isToolEnabled: this.isToolEnabled
-    });
-
     // Note: we are treating basics as extension internally
     var basics = {
       name: "_basics",
@@ -56,7 +51,10 @@ var DocumentControllerMixin = {
       stateHandlers: config.stateHandlers || {},
       tools: config.tools || []
     };
-    var extensions = [basics].concat(config.extensions);
+    var extensions = [basics];
+    if (config.extensions) {
+      extensions = extensions.concat(config.extensions);
+    }
 
     this.extensionManager = new ExtensionManager(extensions, this);
 
@@ -67,8 +65,16 @@ var DocumentControllerMixin = {
       });
     });
     this.componentRegistry = componentRegistry;
-  },
 
+    var toolRegistry = new Substance.Surface.ToolRegistry();
+    _.each(extensions, function(extension) {
+      // FIXME: after Tool refactor this will be 'tools'
+      _.each(extension._tools, function(ToolClass) {
+        toolRegistry.registerTool(ToolClass);
+      });
+    });
+    this.toolRegistry = toolRegistry;
+  },
   _transactionStarted: function(tx) {
     // store the state so that it can be recovered when undo/redo
     tx.before.state = this.state;
@@ -105,8 +111,10 @@ var DocumentControllerMixin = {
   _onSelectionChanged: function(sel) {
     // var modules = this.getModules();
     this.extensionManager.handleSelectionChange(sel);
-    // Notify all registered tools about the selection change (if enabled)
-    this.toolManager.updateTools(sel, this.getSurface());
+    var surface = this.getSurface();
+    this.toolRegistry.each(function(tool) {
+      tool.update(surface, sel);
+    }, this);
   },
 
   requestSave: function() {
@@ -303,6 +311,7 @@ var DocumentControllerMixin = {
     getHighlightedNodes: React.PropTypes.func,
     getHighlightsForTextProperty: React.PropTypes.func,
     componentRegistry: React.PropTypes.object,
+    toolRegistry: React.PropTypes.object,
   },
 
   getChildContext: function() {
@@ -310,7 +319,8 @@ var DocumentControllerMixin = {
       app: this,
       getHighlightedNodes: this.getHighlightedNodes,
       getHighlightsForTextProperty: this.getHighlightsForTextProperty,
-      componentRegistry: this.componentRegistry
+      componentRegistry: this.componentRegistry,
+      toolRegistry: this.toolRegistry
     };
     return context;
   },
