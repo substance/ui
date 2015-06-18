@@ -40,16 +40,6 @@ var TextTool = React.createClass({
     e.preventDefault();
 
     this.tool.switchTextType(e.currentTarget.dataset.type)
-
-    // if (!this.state.active) return;
-    // var textType = TEXT_TYPES[e.currentTarget.dataset.type];
-    // var surface = this.state.surface;
-    // var editor = surface.getEditor();
-
-    // editor.switchType(this.state.sel, textType.data);
-    // this.setState({
-    //   expanded: false
-    // });
   },
 
   getInitialState: function() {
