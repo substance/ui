@@ -1,0 +1,249 @@
+@import 'reset';
+@import 'basics';
+
+/* Variables
+-------------------------------------------------- */
+ 
+$border-color: #ddd;
+
+$fill-gray-color: #eee;
+$fill-light-color: #f8f8f8;
+$fill-white-color: #fff;
+$fill-dark-color: #404040;
+
+/* Mixins
+-------------------------------------------------- */
+ 
+/* Rounded corners */
+ 
+@mixin rounded-corners() {
+  -webkit-border-radius: 2px;
+  -moz-border-radius:    2px;
+  -ms-border-radius:     2px;
+  border-radius:         2px;
+}
+ 
+@mixin dark-fill($opacity) {
+  background: rgba(0,0,0, $opacity);
+}
+
+@mixin light-fill($opacity) {
+  background: rgba(255,255,255, $opacity);
+}
+
+/* Padding
+-------------------------------------------------- */
+
+.pad2 { padding: 2px; }
+.pad5 { padding: 5px; }
+.pad10 { padding: 10px; }
+.pad20 { padding: 20px; }
+
+
+.pad2x { padding-left: 2px; padding-right: 2px }
+.pad5x { padding-left: 5px; padding-right: 5px }
+.pad10x { padding-left: 10px; padding-right: 10px }
+.pad20x { padding-left: 20px; padding-right: 20px }
+
+.pad2y { padding-top: 2px; padding-bottom: 2px }
+.pad5y { padding-top: 5px; padding-bottom: 5px }
+.pad10y { padding-top: 10px; padding-bottom: 10px }
+.pad20y { padding-top: 20px; padding-bottom: 20px }
+
+
+/* Colors
+-------------------------------------------------- */
+
+.fill-dark  { background: $fill-dark-color; }
+.fill-gray  { background: $fill-dark-color; }
+.fill-light { background: $fill-light-color; }
+.fill-white  { background: #fff; }
+
+/* Helpers
+-------------------------------------------------- */
+ 
+.limiter {
+  max-width:1000px;
+  margin-left:auto;
+  margin-right:auto;
+}
+ 
+/* Typography */
+.small { font-size: 13px; line-height: 16px; }
+.large { font-size: 17px; line-height: 20px; }
+.dark { color:#fff; }
+ 
+/* Borders */
+.border { border: 1px solid $border-color; }
+.border-left { border-left: 1px solid $border-color;}
+.border-right { border-right: 1px solid $border-color; }
+.border-top { border-top: 1px solid $border-color; }
+.border-bottom { border-bottom: 1px solid $border-color; }
+ 
+/* Deemphasis */
+.quiet { color: rgba(0,0,0,.5); }
+.dark .quiet { color: rgba(255,255,255,.5); }
+ 
+/* Floating */
+.float-left { float: left; }
+.float-right { float: left; }
+ 
+/* Clearfix - see http://www.positioniseverything.net/easyclearing.html */
+.clearfix { display:block; }
+.clearfix:after {
+  content:'';
+  display:block;
+  height:0;
+  clear:both;
+  visibility:hidden;
+}
+
+/* Disabled style */
+.disabled {
+  opacity: 0.1;
+  cursor: not-allowed;
+}
+ 
+.shadow { box-shadow: 0 0 25px 0 rgba(0,0,0,0.15); }
+
+/* Menubar
+-------------------------------------------------- */
+
+.menubar {
+  height: 40px;
+  .menu-group {
+    float: left;
+    margin-left: 5px;
+  }
+
+  .pill {
+    font-weight: 600;
+
+    padding: 0px 10px;
+    float: left;
+    margin: 5px;
+    height: 30px;
+    min-width: 30px;
+    text-align: center;
+    @include rounded-corners();
+
+    &.active {
+      @include dark-fill(0.05);
+    }
+  }
+
+
+
+  &.dark .pill {
+    &.active, &:hover {
+      @include light-fill(0.1);  
+    }
+  }
+}
+
+
+/* Toolbar
+-------------------------------------------------- */
+
+ 
+.toolbar {
+  height: 40px;
+  // background: $fill-light-color;
+  
+  .tool-group {
+    float: left;
+    margin-right: 10px;
+  }
+  
+  /* Toolbar Tool
+  ---------------------------- */
+
+  .tool {
+    float: left;
+    margin: 5px;
+    height: 30px;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .tool:hover {
+    @include dark-fill(0.05);
+  }
+
+  .tool.disabled:hover {background: none; }
+
+  .tool.active {
+    @include dark-fill(0.1);
+  }
+
+  /* Toolbar dropdown
+  ---------------------------- */
+
+  .dropdown {
+    overflow: visible;
+    position: relative;
+    float: left;
+
+    .toggle {
+      height: 30px;
+      padding: 0px 10px;
+      line-height: 30px;
+      margin: 5px;
+      display: block;
+    }
+
+    .toggle:after {
+      content: " \f0d7";
+      padding-left: 10px;
+      font-family: FontAwesome;
+    }
+
+    .options {
+      display: none;
+      position: absolute;
+      top: 40px;
+      min-width: 150px;
+
+      .option {
+        display: block;
+        padding: 5px 10px;
+        width:100%; // needed to make buttons render like block elements
+      }
+
+      .option:hover {
+        @include dark-fill(0.05);
+      }
+    }
+
+    &.open .options {
+      display: block;
+    }
+  }
+
+  /* Toolbar Select
+  ---------------------------- */
+
+  .select {
+    @extend .dropdown;
+
+    .toggle {
+      background: white;
+      border: 1px solid $border-color;
+    }
+
+    .options {
+      position: static;
+    }
+  }
+}
+
+
+
+
+ 
+/* TODO:
+
+- make complete toolbar example
+- try it with a dark background
+*/
+
