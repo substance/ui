@@ -1,11 +1,17 @@
 /* Inline Elements: Defaults
 ------------------------------------------------------- */
+
+body,html {
+  overflow: hidden;
+}
+
 body,
 input,
 textarea {
   color:rgba(0,0,0,0.75);
   font:16px/20px 'Source Sans Pro', Arial;
   -webkit-font-smoothing:antialiased;
+
 }
 
 h1, h2, h3, h4, h5, h6 {

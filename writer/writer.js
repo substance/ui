@@ -8,10 +8,22 @@ var ContentPanel = require("../content_panel");
 var WriterControllerMixin = require("./writer_controller_mixin");
 var StatusBar = require("./status_bar");
 
+
 // The Substance Writer Component
 // ----------------
 
 var WriterMixin = _.extend({}, WriterControllerMixin, Substance.EventEmitter.prototype, {
+
+  handleCloseModal: function(e) {
+    e.preventDefault();
+    console.log('handleclose dialog')
+    $('.modal').toggleClass('active');
+  },
+
+  preventBubbling: function(e) {
+    console.log('preventing...');
+    e.stopPropagation();
+  },  
 
   render: function() {
     var ContentToolbar = this.componentRegistry.get('content_toolbar') || ContentTools;
@@ -23,6 +35,14 @@ var WriterMixin = _.extend({}, WriterControllerMixin, Substance.EventEmitter.pro
       $$('div', {className: "resource-container"},
         this.createContextToggles(),
         this.createContextPanel(this)
+      ),
+      $$('div', {className: 'modal', onClick: this.handleCloseModal},
+        $$('div', {className: 'body', onClick: this.preventBubbling},
+          $$('h1', null, "Reference manager"),
+          $$('p', null, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed augue dui, congue at pharetra eleifend, ullamcorper tempus lorem. Aenean ipsum risus, lobortis ut lobortis ac, dapibus nec mauris. Aliquam sed nulla ut arcu viverra rutrum viverra eget urna. Nulla accumsan leo neque, a rhoncus nunc malesuada ac. Curabitur diam nisi, maximus in dolor sit amet, ultrices semper elit. Aenean ac venenatis velit, et porttitor lectus. Sed quis urna id tortor sagittis dignissim ut vitae orci. Donec suscipit ante id facilisis sagittis. Curabitur auctor tortor ut enim hendrerit, id posuere magna facilisis. Quisque a tristique felis. Duis aliquam turpis ex, eget finibus leo egestas nec. Nunc sed magna neque. Cras quis turpis sit amet massa rhoncus euismod. Praesent quis magna nibh. Nunc efficitur venenatis leo non ullamcorper. Aenean gravida a dui ut sagittis.'),
+          $$('p', null, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed augue dui, congue at pharetra eleifend, ullamcorper tempus lorem. Aenean ipsum risus, lobortis ut lobortis ac, dapibus nec mauris. Aliquam sed nulla ut arcu viverra rutrum viverra eget urna. Nulla accumsan leo neque, a rhoncus nunc malesuada ac. Curabitur diam nisi, maximus in dolor sit amet, ultrices semper elit. Aenean ac venenatis velit, et porttitor lectus. Sed quis urna id tortor sagittis dignissim ut vitae orci. Donec suscipit ante id facilisis sagittis. Curabitur auctor tortor ut enim hendrerit, id posuere magna facilisis. Quisque a tristique felis. Duis aliquam turpis ex, eget finibus leo egestas nec. Nunc sed magna neque. Cras quis turpis sit amet massa rhoncus euismod. Praesent quis magna nibh. Nunc efficitur venenatis leo non ullamcorper. Aenean gravida a dui ut sagittis.'),
+          $$('p', null, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed augue dui, congue at pharetra eleifend, ullamcorper tempus lorem. Aenean ipsum risus, lobortis ut lobortis ac, dapibus nec mauris. Aliquam sed nulla ut arcu viverra rutrum viverra eget urna. Nulla accumsan leo neque, a rhoncus nunc malesuada ac. Curabitur diam nisi, maximus in dolor sit amet, ultrices semper elit. Aenean ac venenatis velit, et porttitor lectus. Sed quis urna id tortor sagittis dignissim ut vitae orci. Donec suscipit ante id facilisis sagittis. Curabitur auctor tortor ut enim hendrerit, id posuere magna facilisis. Quisque a tristique felis. Duis aliquam turpis ex, eget finibus leo egestas nec. Nunc sed magna neque. Cras quis turpis sit amet massa rhoncus euismod. Praesent quis magna nibh. Nunc efficitur venenatis leo non ullamcorper. Aenean gravida a dui ut sagittis.')
+        )
       ),
       $$(StatusBar, {
         doc: this.props.doc
