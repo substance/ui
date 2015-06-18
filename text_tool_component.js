@@ -51,6 +51,7 @@ var TextTool = React.createClass({
 
   toggleAvailableTextTypes: function(e) {
     e.preventDefault();
+    if (!this.state.enabled) return;
     this.setState({
       open: !this.state.open
     });
@@ -60,26 +61,27 @@ var TextTool = React.createClass({
     var classNames = ['text-tool-component', 'select'];
     var textTypes = this.tool.getAvailableTextTypes();
 
-    if (!this.state.enabled) classNames.push('active');
+    // TODO: how is this used?
     if (this.state.open) classNames.push('open');
 
-    var currentTextTypeEl;
-    if (this.state.currentTextType) {
-      var currentTextType = textTypes[this.state.currentTextType].label;
-      currentTextTypeEl = $$('button', {
-        className: "toggle",
-        onMouseDown: this.toggleAvailableTextTypes,
-        onClick: this.handleClick
-      }, currentTextType);
+    var isTextContext = textTypes[this.state.currentTextType];
+    var label;
+    if (isTextContext) {
+      label = textTypes[this.state.currentTextType].label;
+      classNames.push('active');
+    } else if (this.state.currentContext) {
+      // TODO: we should play with some i18n framework to retrieve labels
+      label = this.state.currentContext;
     } else {
-      currentTextTypeEl = $$('button', {
+      label = "No Selection"
+    }
+    var currentTextTypeEl = $$('button', {
         href: "#",
         className: "toggle",
         onMouseDown: this.toggleAvailableTextTypes,
         onClick: this.handleClick
-      }, "No selection");
-    }
-      
+      }, label, $$('span', { className: "caret" }));
+
     var availableTextTypes = [];
     availableTextTypes = _.map(textTypes, function(textType, textTypeId) {
       return $$('button', {
