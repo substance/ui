@@ -239,11 +239,42 @@ $fill-dark-color: #404040;
 
 
 
+/* Modal
+-------------------------------------------------- */
 
- 
+.modal {
+  display: none;
+  z-index: 500000;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background: rgba(0,0,0,0.6);
+
+  .body {
+    width: 700px;
+    margin: 50px auto;
+    height: 400px;
+    background: white;
+    overflow: auto;
+  }
+
+  &.active {
+    display: block;
+  }
+
+  &.small {
+    .body {max-width: 400px; }
+  }
+
+  &.big {
+    .body {max-width: 1200px; }
+  }
+}
+
 /* TODO:
 
 - make complete toolbar example
 - try it with a dark background
 */
-
