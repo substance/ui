@@ -71,9 +71,9 @@ var TextTool = React.createClass({
       classNames.push('active');
     } else if (this.state.currentContext) {
       // TODO: we should play with some i18n framework to retrieve labels
-      label = this.state.currentContext;
+      label = i18n.t(this.state.currentContext);
     } else {
-      label = "No Selection"
+      label = i18n.t("no_selection")
     }
     var currentTextTypeEl = $$('button', {
         href: "#",
