@@ -43,6 +43,8 @@ var DocumentControllerMixin = {
       'document:changed': this._onDocumentChanged
     });
 
+    this._onSelectionChangedDebounced = _.debounce(this._onSelectionChanged, 100);
+
     // Note: we are treating basics as extension internally
     var basics = {
       name: "_basics",
@@ -110,14 +112,15 @@ var DocumentControllerMixin = {
     }
   },
 
-  _onSelectionChanged: function(sel) {
+  _onSelectionChanged: function(sel, surface) {
+    this.updateSurface(surface);
     // var modules = this.getModules();
     this.extensionManager.handleSelectionChange(sel);
-    var surface = this.getSurface();
     this.toolRegistry.each(function(tool) {
       // console.log('Updating tool', tool.constructor.static.name, surface, sel);
       tool.update(surface, sel);
     }, this);
+    this.emit('selection:changed', sel);
   },
 
   requestSave: function() {
@@ -168,11 +171,7 @@ var DocumentControllerMixin = {
     surface.enabledTools = options.enabledTools || [];
 
     surface.connect(this, {
-      'selection:changed': function(sel) {
-        this.updateSurface(surface);
-        this._onSelectionChanged(sel);
-        this.emit('selection:changed', sel);
-      }
+      'selection:changed': this._onSelectionChangedDebounced
     });
   },
 
