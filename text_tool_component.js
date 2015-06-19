@@ -31,27 +31,28 @@ var TextTool = React.createClass({
     this.replaceState(toolState);
   },
 
-
   handleClick: function(e) {
     e.preventDefault();
   },
 
-  handleMouseDown: function(e) {
+  handleSwitchTextType: function(e) {
     e.preventDefault();
-
-    this.tool.switchTextType(e.currentTarget.dataset.type)
+    this.tool.switchTextType(e.currentTarget.dataset.type);
   },
 
   getInitialState: function() {
     return {
-      enabled: false,
+      disabled: true,
       open: false
     };
   },
 
   toggleAvailableTextTypes: function(e) {
     e.preventDefault();
-    if (!this.state.enabled) return;
+    if (this.tool.isDisabled()) return;
+
+    // HACK: This only updates the view state state.open is not set on the tool itself
+    // That way the dropdown automatically closes when the selection changes
     this.setState({
       open: !this.state.open
     });
@@ -61,33 +62,35 @@ var TextTool = React.createClass({
     var classNames = ['text-tool-component', 'select'];
     var textTypes = this.tool.getAvailableTextTypes();
 
-    // TODO: how is this used?
+    // Note: this is a view internal state for opening the select dropdown
     if (this.state.open) classNames.push('open');
+    if (this.state.disabled) classNames.push('disabled');
 
     var isTextContext = textTypes[this.state.currentTextType];
     var label;
+
     if (isTextContext) {
       label = textTypes[this.state.currentTextType].label;
-      classNames.push('active');
     } else if (this.state.currentContext) {
       // TODO: we should play with some i18n framework to retrieve labels
       label = i18n.t(this.state.currentContext);
     } else {
       label = i18n.t("no_selection")
     }
+
     var currentTextTypeEl = $$('button', {
         href: "#",
         className: "toggle",
         onMouseDown: this.toggleAvailableTextTypes,
         onClick: this.handleClick
-      }, label, $$('span', { className: "caret" }));
+      }, label);
 
     var availableTextTypes = [];
     availableTextTypes = _.map(textTypes, function(textType, textTypeId) {
       return $$('button', {
         className: 'option '+textTypeId,
         "data-type": textTypeId,
-        onMouseDown: this.handleMouseDown,
+        onMouseDown: this.handleSwitchTextType,
         onClick: this.handleClick
       }, textType.label);
     }.bind(this));

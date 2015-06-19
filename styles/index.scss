@@ -100,7 +100,7 @@ $fill-dark-color: #404040;
 
 /* Disabled style */
 .disabled {
-  opacity: 0.1;
+  opacity: 0.2;
   cursor: not-allowed;
 }
  
@@ -148,7 +148,6 @@ $fill-dark-color: #404040;
  
 .toolbar {
   height: 40px;
-  // background: $fill-light-color;
   
   .tool-group {
     float: left;
@@ -189,12 +188,15 @@ $fill-dark-color: #404040;
       padding: 0px 10px;
       line-height: 30px;
       margin: 5px;
+
       display: block;
     }
 
-    .toggle:after {
+    &:not(.disabled) .toggle:after {
       content: " \f0d7";
       padding-left: 10px;
+
+      float: right;
       font-family: FontAwesome;
     }
 
@@ -231,12 +233,11 @@ $fill-dark-color: #404040;
       border: 1px solid $border-color;
     }
 
-    .options {
-      position: static;
-    }
+    // .options {
+    //   position: static;
+    // }
   }
 }
-
 
 
 /* Modal

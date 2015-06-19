@@ -186,7 +186,7 @@
   top: 0px;
 }
 
-.content-tools-component .tools {
+/*.content-tools-component .tools {
   height: 40px;
 }
 
@@ -219,74 +219,33 @@
 
 .content-tools-component .tools a.selected:hover {
   background: #666;
-}
+}*/
 
 /* Text Tool has individual styles */
 
-.content-tools-component .tools .text-tool-component {
-  float: left;
-  height: 30px;
-  margin: 5px;
-  margin-left: 0px;
-  padding-left: 20px;
-  font-size: 12px;
-  line-height: 30px;
-  position: relative;
+
+/* Text Tool styles
+-----------------------------------------------------*/
+
+
+.text-tool-component.select .toggle {
   width: 140px;
 }
 
-.content-tools-component .tools .text-tool-component .current-text-type {
-  display: block;
-  background: none;
-  color: #aaa;
-}
 
-.content-tools-component .tools .text-tool-component.active .current-text-type {
-  color: #666;
-}
-
-.content-tools-component .tools .text-tool-component.active .current-text-type:hover {
-  color: #444;
-}
-
-.content-tools-component .tools .text-tool-component .available-text-types {
-  display: none;
-  position: absolute;
-  top: 30px;
-  left: 5px;
-  width: 140px;
-  padding: 10px;
-  border: 1px solid #ddd;
-}
-
-.content-tools-component .tools .text-tool-component.expanded .available-text-types {
-  display: block;
-  background: white;
-}
-
-.content-tools-component .tools .text-tool-component .available-text-types .text-type {
-  display: block;
-  padding: 5px;
-  
-  color: #666;
-}
-
-.content-tools-component .tools .text-tool-component .available-text-types .text-type:hover {
-  color: #444;
-}
 
 /* Special styles */
-.content-tools-component .tools .text-tool-component .available-text-types .text-type.heading1 {
+.content-tools-component .option.heading1 {
   font-size: 24px;
   font-weight: 600;
 }
 
-.content-tools-component .tools .text-tool-component .available-text-types .text-type.heading2 {
+.content-tools-component .option.heading2 {
   font-size: 20px;
   font-weight: 600;
 }
 
-.content-tools-component .tools .text-tool-component .available-text-types .text-type.heading3 {
+.content-tools-component .option.heading3 {
   font-size: 16px;
   font-weight: 600;
 }
