@@ -132,8 +132,6 @@ $fill-dark-color: #404040;
     }
   }
 
-
-
   &.dark .pill {
     &.active, &:hover {
       @include light-fill(0.1);  
@@ -232,13 +230,8 @@ $fill-dark-color: #404040;
       background: white;
       border: 1px solid $border-color;
     }
-
-    // .options {
-    //   position: static;
-    // }
   }
 }
-
 
 /* Modal
 -------------------------------------------------- */
@@ -273,9 +266,3 @@ $fill-dark-color: #404040;
     .body {max-width: 1200px; }
   }
 }
-
-/* TODO:
-
-- make complete toolbar example
-- try it with a dark background
-*/
