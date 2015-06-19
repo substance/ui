@@ -112,18 +112,33 @@ $fill-dark-color: #404040;
 
 .button {
   font-weight: 600;
-  color: #1B6685;
   height: 30px;
   min-width: 30px;
-  padding: 0px 5px;
+  padding: 0px 10px;
   text-align: center;
 
   &:hover {
-    color: rgba(11, 157, 217, 1);
+    @include dark-fill(0.2);
   }
 
-  &:focus {
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+  // Display in a linkish way
+  &.plain {
+    background:none;
+    color: #1B6685;
+
+    &:hover {
+      color: rgba(11, 157, 217, 1);
+    }
+  }
+
+  &.loud {
+    background: #4A90E2;
+    color: rgba(255,255,255, 0.8);
+
+    &:hover {
+      background: #397AC6;
+      color: #fff;
+    }
   }
 }
 
@@ -140,7 +155,7 @@ $fill-dark-color: #404040;
 
   .pill {
     font-weight: 600;
-
+    
     padding: 0px 10px;
     float: left;
     margin: 5px;
