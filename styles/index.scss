@@ -107,6 +107,27 @@ $fill-dark-color: #404040;
 .shadow { box-shadow: 0 0 25px 0 rgba(0,0,0,0.15); }
 
 
+/* Buttons (generic)
+-------------------------------------------------- */
+
+.button {
+  font-weight: 600;
+  color: #1B6685;
+  height: 30px;
+  min-width: 30px;
+  padding: 0px 5px;
+  text-align: center;
+
+  &:hover {
+    color: rgba(11, 157, 217, 1);
+  }
+
+  &:focus {
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+  }
+}
+
+
 /* Menubar
 -------------------------------------------------- */
 
@@ -128,8 +149,12 @@ $fill-dark-color: #404040;
     text-align: center;
     @include rounded-corners();
 
+    &:hover {
+      @include dark-fill(0.05);
+    }
+
     &.active {
-      @include dark-fill(0.1);
+      @include dark-fill(0.2);
     }
   }
 
@@ -156,12 +181,20 @@ $fill-dark-color: #404040;
   /* Toolbar Tool
   ---------------------------- */
 
+  input {
+    margin: 5px;
+    margin-left: 20px;
+    min-width: 300px;
+    border: none;
+  }
+
   .button {
     float: left;
     margin: 5px;
     height: 30px;
     min-width: 30px;
     text-align: center;
+    color: inherit;
   }
 
   .button:hover {
@@ -258,7 +291,6 @@ $fill-dark-color: #404040;
     top: 30px;
     bottom: 30px;
     background: white;
-    
     box-shadow: 0 0 25px 0 rgba(0,0,0,0.8);
 
 
@@ -286,7 +318,6 @@ $fill-dark-color: #404040;
       left: 0px;
       right: 0px;
       bottom: 0px;
-      padding: 20px;
     }
   }
 
