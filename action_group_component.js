@@ -3,10 +3,15 @@ var $$ = React.createElement;
 
 
 var ActionGroupComponent = React.createClass({
+  contextTypes: {
+    app: React.PropTypes.object.isRequired
+  },
 
   handleAction: function(e) {
+    var app = this.context.app;
     var actionName = e.currentTarget.dataset.id;
-    console.log('handling action', actionName);
+    console.log('executing action', actionName);
+    app.executeAction(actionName);
   },
 
   // Prevent click behavior as we want to preserve the text selection in the doc

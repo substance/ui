@@ -61,13 +61,22 @@ ExtensionManager.Prototype = function() {
     return this.handle("handleSelectionChange", sel);
   };
 
+  this.handleAction = function(actionName) {
+    return this.handle("handleAction", actionName);
+  };
+
   this.handleAnnotationToggle = function(annotationId) {
     return this.handle("handleAnnotationToggle", annotationId);
   };
 
   this.getActivePanelElement = function() {
     var activePanel = this.handle("handleContextPanelCreation");
-    return activePanel || [];
+    return activePanel;
+  };
+
+  this.getActiveModalPanelElement = function() {
+    var activeModalPanel = this.handle("handleModalPanelCreation");
+    return activeModalPanel;
   };
 
   // Based on a certain writer state, determine which nodes

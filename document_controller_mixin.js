@@ -208,8 +208,16 @@ var DocumentControllerMixin = {
     return this.extensionManager.getPanels();
   },
 
+  executeAction: function(actionName) {
+    return this.extensionManager.handleAction(actionName);
+  },
+
   getActivePanelElement: function() {
     return this.extensionManager.getActivePanelElement();
+  },
+
+  getActiveModalPanelElement: function() {
+    return this.extensionManager.getActiveModalPanelElement();
   },
 
   getActiveContainerAnnotations: function() {
@@ -378,6 +386,9 @@ var DocumentControllerMixin = {
     this.clipboard.attach(rootElement);
   },
 
+  handleAction: function(actionName) {
+    this.extensionManager.handleAction(actionName);
+  },
 
   // E.g. when a tool requests a context switch
   handleContextSwitch: function(contextId) {
@@ -435,6 +446,16 @@ var DocumentControllerMixin = {
     return $$('div', {className: "context-toggles"},
       Substance.compact(panelComps)
     );
+  },
+
+  createModalPanel: function() {
+    var state = this.state;
+    var modalPanelElement = this.getActiveModalPanelElement();
+    if (!modalPanelElement) {
+      // We just show an empty div instead of the modal thing
+      return $$('div');
+    }
+    return modalPanelElement;
   },
 
   // Create a new panel based on current writer state (contextId)
