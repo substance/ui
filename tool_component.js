@@ -37,30 +37,30 @@ var ToolComponent = React.createClass({
 
   handleMouseDown: function(e) {
     e.preventDefault();
-    if (!this.state.enabled) {
+    if (this.state.disabled) {
       return;
     }
     this.tool.performAction();
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    return (this.state.enabled !== nextState.enabled ||
-      this.state.selected !== nextState.selected);
+    return (this.state.disabled !== nextState.disabled ||
+      this.state.active !== nextState.active);
   },
 
   getInitialState: function() {
     return {
-      enabled: false,
-      selected: false
+      disabled: true,
+      active: false
     };
   },
 
   render: function() {
     var classNames = ['tool'];
-    if (!this.state.enabled) {
+    if (this.state.disabled) {
       classNames.push('disabled');
     }
-    if (this.state.selected) {
+    if (this.state.active) {
       classNames.push("active");
     }
     return $$("button", {

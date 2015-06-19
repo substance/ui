@@ -16,11 +16,10 @@ var RedoTool = Substance.Surface.Tool.extend({
 
   performAction: function() {
     var doc = this.getDocument();
-    var state = this.getToolState();
-    if (state.enabled && doc.undone.length>0) {
+    if (this.isDisabled() && doc.undone.length>0) {
       doc.redo();
     }
-  },
+  }
 
 });
 

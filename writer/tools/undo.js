@@ -15,9 +15,8 @@ var UndoTool = Substance.Surface.Tool.extend({
   },
 
   performAction: function() {
-    var state = this.getToolState();
     var doc = this.getDocument();
-    if (state.enabled && doc.done.length>0) {
+    if (this.isEnabled() && doc.done.length>0) {
       doc.undo();
     }
   }
