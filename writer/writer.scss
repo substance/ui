@@ -6,7 +6,6 @@
   overflow: auto;
 }
 
-
 /* Writer Component
 -----------------------------------------------------*/
 
@@ -186,40 +185,6 @@
   top: 0px;
 }
 
-/*.content-tools-component .tools {
-  height: 40px;
-}
-
-.content-tools-component .tools a.tool {
-  font-size: 12px;
-  display: block;
-  float: left;
-  height: 30px;
-  width: 30px;
-  margin: 5px;
-  color: #444;
-  line-height: 30px;
-  text-align: center;
-  opacity: 0.2;
-}
-
-.content-tools-component .tools a.active {
-  opacity: 1.0;
-}
-
-.content-tools-component .tools a.selected {
-  opacity: 1.0;
-  background: #444;
-  color: #fff;
-}
-
-.content-tools-component .tools a:hover {
-  background: #eee;
-}
-
-.content-tools-component .tools a.selected:hover {
-  background: #666;
-}*/
 
 /* Text Tool has individual styles */
 
@@ -231,8 +196,6 @@
 .text-tool-component.select .toggle {
   width: 140px;
 }
-
-
 
 /* Special styles */
 .content-tools-component .option.heading1 {
@@ -295,7 +258,6 @@
 .content-panel-component .container-node .nodes > .content-node.heading.level-3 {
   font-size: 16px;
 }
-
 
 /* For debugging purposes */
 
@@ -440,7 +402,6 @@
 }
 
 
-
 /* Selection style sheets
 -----------------------------------------------------*/
 
@@ -452,5 +413,3 @@
 ::-moz-selection {
   background: rgba(0,0,0,0.1);
 }
-
-
