@@ -56,7 +56,7 @@ var ToolComponent = React.createClass({
   },
 
   render: function() {
-    var classNames = ['tool'];
+    var classNames = ['tool button'];
     if (this.state.disabled) {
       classNames.push('disabled');
     }

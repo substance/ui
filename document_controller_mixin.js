@@ -6,6 +6,8 @@ var _ = require("substance/helpers");
 var Highlight = require("./text_property").Highlight;
 var ExtensionManager = require("./extension_manager");
 
+var Modal = require("./modal");
+
 var $$ = React.createElement;
 
 // Mixin with helpers to implement a DocumentController
@@ -212,6 +214,12 @@ var DocumentControllerMixin = {
     return this.extensionManager.handleAction(actionName);
   },
 
+  closeModal: function(actionName) {
+    var newState = _.cloneDeep(this.state);
+    delete newState.modal;
+    this.replaceState(newState);
+  },
+
   getActivePanelElement: function() {
     return this.extensionManager.getActivePanelElement();
   },
@@ -336,7 +344,7 @@ var DocumentControllerMixin = {
   },
 
   getInitialState: function() {
-    return {"contextId": "toc"};
+    return {"contextId": "toc", modal: {contextId: "manageBibitems"}};
   },
 
   // Internal methods
@@ -451,11 +459,15 @@ var DocumentControllerMixin = {
   createModalPanel: function() {
     var state = this.state;
     var modalPanelElement = this.getActiveModalPanelElement();
+
     if (!modalPanelElement) {
-      // We just show an empty div instead of the modal thing
+      // Just render an empty div if no modal active available
       return $$('div');
     }
-    return modalPanelElement;
+
+    return $$(Modal, {
+      panelElement: modalPanelElement
+    });
   },
 
   // Create a new panel based on current writer state (contextId)

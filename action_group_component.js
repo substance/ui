@@ -10,7 +10,6 @@ var ActionGroupComponent = React.createClass({
   handleAction: function(e) {
     var app = this.context.app;
     var actionName = e.currentTarget.dataset.id;
-    console.log('executing action', actionName);
     app.executeAction(actionName);
   },
 
@@ -20,8 +19,27 @@ var ActionGroupComponent = React.createClass({
   },
 
   handleDropdownToggle: function(e) {
-    this.setState({open: !this.state.open});
     e.preventDefault();
+
+    var open = this.state.open;
+    var self = this;
+
+    if (open) return;
+    this.setState({open: !this.state.open});
+
+    setTimeout(function() {
+      $(window).one('mousedown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        self.close();
+      });
+    }, 0);
+  },
+
+  close: function() {
+    this.setState({
+      open: false
+    });
   },
 
   getInitialState: function() {
@@ -51,7 +69,7 @@ var ActionGroupComponent = React.createClass({
         className: 'toggle',
         onMouseDown: this.handleDropdownToggle,
         onClick: this.handleClick
-      }, i18n.t('menu.manage')),
+      }, this.props.label),
       $$('div', {className: 'options shadow border fill-white'}, actionEls)
     );
   }
