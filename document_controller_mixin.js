@@ -344,7 +344,7 @@ var DocumentControllerMixin = {
   },
 
   getInitialState: function() {
-    return {"contextId": "toc", modal: {contextId: "manageBibitems"}};
+    return {"contextId": "toc"};
   },
 
   // Internal methods
