@@ -9,7 +9,8 @@ var ToolComponent = React.createClass({
   displayName: "ToolComponent",
 
   contextTypes: {
-    toolRegistry: React.PropTypes.object.isRequired
+    toolRegistry: React.PropTypes.object.isRequired,
+    app: React.PropTypes.object.isRequired
   },
 
   componentDidMount: function() {
@@ -40,7 +41,7 @@ var ToolComponent = React.createClass({
     if (this.state.disabled) {
       return;
     }
-    this.tool.performAction();
+    this.tool.performAction(this.context.app);
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -56,20 +57,25 @@ var ToolComponent = React.createClass({
   },
 
   render: function() {
-    var classNames = ['tool button'];
+    var classNames = [];
+
+    if (this.props.classNames) {
+      classNames = this.props.classNames.slice();
+    }
+
     if (this.state.disabled) {
       classNames.push('disabled');
     }
     if (this.state.active) {
       classNames.push("active");
     }
+
     return $$("button", {
       className: classNames.join(' '),
-      dangerouslySetInnerHTML: {__html: '<i class="fa ' + this.props.icon + '"></i>'},
       title: this.props.title,
       onMouseDown: this.handleMouseDown,
       onClick: this.handleClick
-    });
+    }, this.props.children);
   }
 });
 
@@ -79,10 +85,9 @@ ToolComponent.StubTool = Substance.Surface.Tool.extend({
     this.name = name;
   },
 
-  performAction: function() {
+  performAction: function(/*app*/) {
     console.log('Stub-Tool %s', this.name);
   }
-
 });
 
 module.exports = ToolComponent;
