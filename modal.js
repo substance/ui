@@ -27,7 +27,7 @@ var ModalPanel = React.createClass({
   },
 
   render: function() {
-    return $$('div', {className: 'modal', onClick: this.handleCloseModal},
+    return $$('div', {className: 'modal '+this.props.panelElement.type.modalSize, onClick: this.handleCloseModal},
       $$('div', {className: 'body', onClick: this.preventBubbling},
         this.props.panelElement
       )
@@ -35,9 +35,5 @@ var ModalPanel = React.createClass({
   }
 });
 
-
-// $$(ModalPanel, {
-//   content: $$(MyPanel, {})
-// })
 
 module.exports = ModalPanel;

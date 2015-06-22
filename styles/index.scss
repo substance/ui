@@ -336,6 +336,12 @@ $fill-dark-color: #404040;
     }
   }
 
+  &.medium .body {
+    max-width: 800px;
+    // left: 200px;
+    // right: 200px;
+  }
+
   // &.small {
   //   .body {max-width: 400px; }
   // }
