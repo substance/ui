@@ -73,14 +73,15 @@ var DocumentControllerMixin = {
     var toolRegistry = new Substance.Surface.ToolRegistry();
     _.each(extensions, function(extension) {
       _.each(extension.tools, function(ToolClass, name) {
-        toolRegistry.add(name, new ToolClass({
-          app: this,
-          doc: doc
-        }));
+        // WARN: this could potentially get problematic, if React derives
+        // the current context differently.
+        var context = _.extend({}, this.context, this.getChildContext());
+        toolRegistry.add(name, new ToolClass(context));
       }, this);
     }, this);
     this.toolRegistry = toolRegistry;
   },
+  
   _transactionStarted: function(tx) {
     // store the state so that it can be recovered when undo/redo
     tx.before.state = this.state;
@@ -325,6 +326,7 @@ var DocumentControllerMixin = {
     // used by text properties to render 'active' annotations
     // For active container annotations annotation fragments are inserted
     // which can be used to highlight the associated range
+    doc: React.PropTypes.object,
     app: React.PropTypes.object,
     getHighlightedNodes: React.PropTypes.func,
     getHighlightsForTextProperty: React.PropTypes.func,
@@ -335,6 +337,7 @@ var DocumentControllerMixin = {
   getChildContext: function() {
     var context = {
       app: this,
+      doc: this.doc,
       getHighlightedNodes: this.getHighlightedNodes,
       getHighlightsForTextProperty: this.getHighlightsForTextProperty,
       componentRegistry: this.componentRegistry,
