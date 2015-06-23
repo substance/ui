@@ -1,6 +1,9 @@
 var Substance = require('substance');
 var $$ = React.createElement;
 var TextProperty = Substance.Surface.TextProperty;
+var Annotator = Substance.Document.Annotator;
+var AnnotationComponent = require('./annotation_component');
+
 
 // TextPropertyComponent
 // ----------------
@@ -11,6 +14,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
 
   contextTypes: {
     surface: React.PropTypes.object.isRequired,
+    componentRegistry: React.PropTypes.object.isRequired,
     getHighlightedNodes: React.PropTypes.func.isRequired,
     getHighlightsForTextProperty: React.PropTypes.func.isRequired
   },
@@ -67,6 +71,46 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     this.updateHighlights();
   },
 
+  renderContent: function() {
+    var domNode = this.getDOMNode();
+    if (!domNode) { return; }
+    React.render($$("span", null, this.renderChildren()), domNode);
+  },
+
+  renderChildren: function() {
+    var componentRegistry = this.context.componentRegistry;
+    var doc = this.getDocument();
+    var path = this.getPath();
+    var text = doc.get(path) || "";
+    var annotations = this.getAnnotations();
+    var annotator = new Annotator();
+    annotator.onText = function(context, text) {
+      context.children.push(text);
+    };
+    annotator.onEnter = function(entry) {
+      var node = entry.node;
+      // TODO: we need a component factory, so that we can create the appropriate component
+      var ViewClass = componentRegistry.get(node.type) || AnnotationComponent;
+      var classNames = [];
+      return {
+        ViewClass: ViewClass,
+        props: {
+          doc: doc,
+          node: node,
+          classNames: classNames,
+        },
+        children: []
+      };
+    };
+    annotator.onExit = function(entry, context, parentContext) {
+      var view = $$(context.ViewClass, context.props, context.children);
+      parentContext.children.push(view);
+    };
+    var root = { children: [] };
+    annotator.start(root, text, annotations);
+    return root.children;
+  },
+
   getAnnotations: function() {
     var doc = this.props.doc;
     var surface = this.context.surface;
@@ -112,7 +156,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     this.context.surface.rerenderDomSelection();
   },
 
-  textPropertyDidChange: function(change, info) {
+  textPropertyDidChange: function() {
     this.renderManually();
   },
 
