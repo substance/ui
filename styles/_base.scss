@@ -73,3 +73,39 @@ a.quiet.active, a.quiet:hover { color:rgba(0,0,0,0.75); }
 
 /* Buttons */
 // button:focus { box-shadow:inset 0 0 0 1px rgba(0,0,0,0.05); }
+
+/* Buttons (generic)
+-------------------------------------------------- */
+
+.button {
+  font-weight: 600;
+  height: 30px;
+  min-width: 30px;
+  padding: 0px 10px;
+  text-align: center;
+
+  &:hover {
+    @include dark-fill(0.2);
+  }
+
+  // Display in a linkish way
+  &.plain {
+    background:none;
+    color: #1B6685;
+
+    &:hover {
+      color: rgba(11, 157, 217, 1);
+    }
+  }
+
+  &.loud {
+    background: #4A90E2;
+    color: rgba(255,255,255, 0.8);
+
+    &:hover {
+      background: #397AC6;
+      color: #fff;
+    }
+  }
+}
+
