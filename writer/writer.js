@@ -8,7 +8,6 @@ var ContentPanel = require("../content_panel");
 var WriterControllerMixin = require("./writer_controller_mixin");
 var StatusBar = require("./status_bar");
 
-
 // The Substance Writer Component
 // ----------------
 
