@@ -1,14 +1,13 @@
 var Substance = require('substance');
+var _ = require('substance/helpers');
 var $$ = React.createElement;
 var TextProperty = Substance.Surface.TextProperty;
 var Annotator = Substance.Document.Annotator;
 var AnnotationComponent = require('./annotation_component');
 
-
 // TextPropertyComponent
 // ----------------
 //
-
 var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.prototype, {
   displayName: "TextProperty",
 
@@ -23,27 +22,30 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     return { highlights: [] };
   },
 
-  // Really?
   shouldComponentUpdate: function() {
-    this.renderManually();
-    this.updateHighlights();
-    return false;
+    var textAnnotations = _.pluck(this.getAnnotations(), 'id');
+    var textHighlights = _.intersection(textAnnotations, this.getHighlights());
+    var shouldUpdate = true;
+    if (this._prevTextAnnotations) {
+      if (_.isEqual(textAnnotations, this._prevTextAnnotations) &&
+          _.isEqual(textHighlights, this._prevTextHighlights)) {
+        shouldUpdate = false;
+      }
+    }
+    // Remember so we can check the next update
+    this._prevTextAnnotations = textAnnotations;
+    this._prevTextHighlights = textHighlights;
+    return shouldUpdate;
   },
 
   componentDidMount: function() {
     var doc = this.props.doc;
     doc.getEventProxy('path').add(this.props.path, this, this.textPropertyDidChange);
-    // HACK: a guard so that we do not render manually when this is unmounted
-    this.__mounted__ = true;
-    // Note: even if we don't need to render in surfaces with container (~two-pass rendering)
-    // we still need to render this in the context of fornm-editors.
-    this.renderManually();
   },
 
   componentWillUnmount: function() {
     var doc = this.props.doc;
     doc.getEventProxy('path').remove(this.props.path, this);
-    this.__mounted__ = false;
   },
 
   render: function() {
@@ -55,26 +57,11 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
         whiteSpace: "pre-wrap"
       },
       "data-path": this.props.path.join('.')
-    });
+    }, this.renderChildren());
   },
 
-  renderManually: function() {
-    // HACK: it happened that this is called even after this component had been mounted.
-    // We need to track these situations and fix them in the right place.
-    // However, we leave it here for a while to increase stability,
-    // as these occasions are not critical for the overall functionality.
-    if(!this.__mounted__) {
-      console.warn('Tried to render an unmounted TextPropertyComponent.');
-      return;
-    }
-    this.renderContent();
-    this.updateHighlights();
-  },
-
-  renderContent: function() {
-    var domNode = this.getDOMNode();
-    if (!domNode) { return; }
-    React.render($$("span", null, this.renderChildren()), domNode);
+  componentDidUpdate: function() {
+    this.getSurface().rerenderDomSelection();
   },
 
   renderChildren: function() {
@@ -83,15 +70,23 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     var path = this.getPath();
     var text = doc.get(path) || "";
     var annotations = this.getAnnotations();
+    var highlightedAnnotations = [];
+    if (this.context.getHighlightedNodes) {
+      this.context.getHighlightedNodes();
+    }
     var annotator = new Annotator();
     annotator.onText = function(context, text) {
       context.children.push(text);
     };
     annotator.onEnter = function(entry) {
       var node = entry.node;
+      var hightlighted = (highlightedAnnotations.indexOf(node.id) >= 0);
       // TODO: we need a component factory, so that we can create the appropriate component
       var ViewClass = componentRegistry.get(node.type) || AnnotationComponent;
       var classNames = [];
+      if (hightlighted) {
+        classNames.push('active');
+      }
       return {
         ViewClass: ViewClass,
         props: {
@@ -103,7 +98,8 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       };
     };
     annotator.onExit = function(entry, context, parentContext) {
-      var view = $$(context.ViewClass, context.props, context.children);
+      var args = [context.ViewClass, context.props].concat(context.children);
+      var view = $$.apply(React, args);
       parentContext.children.push(view);
     };
     var root = { children: [] };
@@ -116,16 +112,13 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     var surface = this.context.surface;
     var path = this.props.path;
     var annotations = doc.getIndex('annotations').get(path);
-
     var containerName = surface.getContainerName();
     if (containerName) {
       var anchors = doc.getIndex('container-annotations').get(path, containerName);
       annotations = annotations.concat(anchors);
     }
-
     var highlights = this.context.getHighlightsForTextProperty(this);
     annotations = annotations.concat(highlights);
-
     return annotations;
   },
 
@@ -135,33 +128,12 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     return this.context.getHighlightedNodes();
   },
 
-  updateHighlights: function() {
-    if (!this.context.getHighlightedNodes) return;
-    var highlightedAnnotations = this.context.getHighlightedNodes();
-    var domNode = this.getDOMNode();
-    var els = $(domNode).find('.annotation, .container-annotation');
-    for (var i = 0; i < els.length; i++) {
-      var el = els[i];
-      var activate = highlightedAnnotations.indexOf(el.dataset.id) >= 0;
-      if (activate) {
-        $(el).addClass('active');
-      } else {
-        $(el).removeClass('active');
-      }
-    }
-  },
-
-  _rerenderAndRecoverSelection: function() {
-    this.renderManually();
-    this.context.surface.rerenderDomSelection();
-  },
-
   textPropertyDidChange: function() {
-    this.renderManually();
+    this.forceUpdate();
   },
 
   getContainer: function() {
-    return this.context.surface.getContainer();
+    return this.getSurface().getContainer();
   },
 
   getDocument: function() {
@@ -174,7 +146,12 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
 
   getElement: function() {
     return this.getDOMNode();
-  }
+  },
+
+  getSurface: function() {
+    return this.context.surface;
+  },
+
 }));
 
 TextPropertyComponent.Highlight = function(path, startOffset, endOffset, options) {
