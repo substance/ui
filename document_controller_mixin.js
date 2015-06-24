@@ -378,7 +378,6 @@ var DocumentControllerMixin = {
     var sprevState = JSON.stringify(this.state);
     var snextState = JSON.stringify(nextState);
     if (Substance.isEqual(sprevState, snextState)) {
-      console.log('skipped update');
       return false;
     }
     return true;
