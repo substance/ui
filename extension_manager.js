@@ -29,16 +29,6 @@ ExtensionManager.Prototype = function() {
     return tools;
   };
 
-  this.getPanels = function() {
-    var extensions = this.extensions;
-    var panels = [];
-
-    for (var i = 0; i < extensions.length; i++) {
-      var ext = extensions[i];
-      panels = panels.concat(ext.panels);
-    }
-    return panels;
-  };
 
   // Generic function to call a state handler
   // ---------------
@@ -67,16 +57,6 @@ ExtensionManager.Prototype = function() {
 
   this.handleAnnotationToggle = function(annotationId) {
     return this.handle("handleAnnotationToggle", annotationId);
-  };
-
-  this.getActivePanelElement = function() {
-    var activePanel = this.handle("handleContextPanelCreation");
-    return activePanel;
-  };
-
-  this.getActiveModalPanelElement = function() {
-    var activeModalPanel = this.handle("handleModalPanelCreation");
-    return activeModalPanel;
   };
 
   // Based on a certain writer state, determine which nodes

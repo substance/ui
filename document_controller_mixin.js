@@ -51,7 +51,6 @@ var DocumentControllerMixin = {
     var basics = {
       name: "_basics",
       components: config.components || {},
-      panels: config.panels || [],
       stateHandlers: config.stateHandlers || {},
       tools: config.tools || []
     };
@@ -207,10 +206,6 @@ var DocumentControllerMixin = {
     return _.includes(enabledTools, toolName);
   },
 
-  getPanels: function() {
-    return this.extensionManager.getPanels();
-  },
-
   executeAction: function(actionName) {
     return this.extensionManager.handleAction(actionName);
   },
@@ -222,11 +217,33 @@ var DocumentControllerMixin = {
   },
 
   getActivePanelElement: function() {
-    return this.extensionManager.getActivePanelElement();
+    var panelComponent = this.componentRegistry.get(this.state.contextId);
+
+    if (panelComponent) {
+      return $$(panelComponent, {
+        doc: this.doc,
+        app: this
+      });      
+    } else {
+      console.warn("Could not find component for contextId:", this.state.contextId);
+    }
   },
 
   getActiveModalPanelElement: function() {
-    return this.extensionManager.getActiveModalPanelElement();
+    var state = this.state;
+
+    if (state.modal) {
+      var modalPanelComponent = this.componentRegistry.get(state.modal.contextId);
+
+      if (modalPanelComponent) {
+        return $$(modalPanelComponent, {
+          doc: this.doc,
+          app: this
+        });        
+      } else {
+        console.warn("Could not find component for contextId:", state.modal.contextId);
+      }
+    }
   },
 
   getActiveContainerAnnotations: function() {
@@ -425,37 +442,38 @@ var DocumentControllerMixin = {
 
   // Toggles for explicitly switching between context panels
   createContextToggles: function() {
-    var panels = this.getPanels();
+    // var panels = this.getPanels();
 
-    var contextId = this.state.contextId;
-    var self = this;
+    // var contextId = this.state.contextId;
+    // var self = this;
 
-    var panelComps = panels.map(function(panelClass) {
-      // We don't show inactive stuff here
-      if (panelClass.isDialog && panelClass.contextId !== contextId) return null;
+    // var panelComps = panels.map(function(panelClass) {
+    //   // We don't show inactive stuff here
+    //   if (panelClass.isDialog && panelClass.contextId !== contextId) return null;
 
-      var className = ["toggle-context"];
-      if (panelClass.contextId === contextId) {
-        className.push("active");
-      }
+    //   var className = ["toggle-context"];
+    //   if (panelClass.contextId === contextId) {
+    //     className.push("active");
+    //   }
 
-      if (panelClass.isDialog) {
-        return $$('div');
-      } else {
-        return $$('a', {
-          className: className.join(" "),
-          href: "#",
-          key: panelClass.contextId,
-          "data-id": panelClass.contextId,
-          onClick: self.handleContextToggle,
-          dangerouslySetInnerHTML: {__html: '<i class="fa '+panelClass.icon+'"></i> <span class="label">'+panelClass.displayName+'</span>'}
-        });
-      }
-    });
+    //   if (panelClass.isDialog) {
+    //     return $$('div');
+    //   } else {
+    //     return $$('a', {
+    //       className: className.join(" "),
+    //       href: "#",
+    //       key: panelClass.contextId,
+    //       "data-id": panelClass.contextId,
+    //       onClick: self.handleContextToggle,
+    //       dangerouslySetInnerHTML: {__html: '<i class="fa '+panelClass.icon+'"></i> <span class="label">'+panelClass.displayName+'</span>'}
+    //     });
+    //   }
+    // });
 
-    return $$('div', {className: "context-toggles"},
-      Substance.compact(panelComps)
-    );
+    // return $$('div', {className: "context-toggles"},
+    //   Substance.compact(panelComps)
+    // );
+    return $$('div', {className: 'context-toggles'});
   },
 
   createModalPanel: function() {
