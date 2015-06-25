@@ -12,7 +12,6 @@ var AnnotationComponent = React.createClass({
   },
   render: function() {
     return $$('span', {
-      key: this.props.node.id,
       className: this.getClassName(),
       "data-id": this.props.node.id},
       this.props.children

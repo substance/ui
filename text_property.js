@@ -75,11 +75,34 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       this.context.getHighlightedNodes();
     }
     var annotator = new Annotator();
+    var fragmentCounters = {};
+    // for debugging
+    // var _level = 0;
+    // var _logIndent = function(level) {
+    //   var prefix = "";
+    //   for (var i = 0; i < level; i++) {
+    //     prefix = prefix.concat("  ");
+    //   }
+    //   return prefix;
+    // };
+    // var _logPrefix = "";
     annotator.onText = function(context, text) {
+      // console.log(_logPrefix+text);
       context.children.push(text);
     };
     annotator.onEnter = function(entry) {
+      // for debugging
+      // _logPrefix = _logIndent(++_level);
       var node = entry.node;
+      var id = node.id;
+      if (!fragmentCounters[id]) {
+        fragmentCounters[id] = 0;
+      }
+      fragmentCounters[id] = fragmentCounters[id]+1;
+      var key = id + "_" + fragmentCounters[id];
+      // for debugging
+      // console.log(_logPrefix+"<"+node.type+" key="+key+">");
+
       var hightlighted = (highlightedAnnotations.indexOf(node.id) >= 0);
       // TODO: we need a component factory, so that we can create the appropriate component
       var ViewClass = componentRegistry.get(node.type) || AnnotationComponent;
@@ -90,6 +113,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       return {
         ViewClass: ViewClass,
         props: {
+          key: key,
           doc: doc,
           node: node,
           classNames: classNames,
@@ -98,6 +122,9 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       };
     };
     annotator.onExit = function(entry, context, parentContext) {
+      // for debugging
+      // _logPrefix = _logIndent(_level--);
+      // console.log(_logPrefix+"</"+entry.node.type+">");
       var args = [context.ViewClass, context.props].concat(context.children);
       var view = $$.apply(React, args);
       parentContext.children.push(view);
