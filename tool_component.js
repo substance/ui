@@ -13,7 +13,7 @@ var ToolComponent = React.createClass({
     app: React.PropTypes.object.isRequired
   },
 
-  componentDidMount: function() {
+  componentWillMount: function() {
     var toolName = this.props.tool;
     if (!toolName) {
       throw new Error('Prop "tool" is mandatory.');
