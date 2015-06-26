@@ -259,6 +259,45 @@
   font-size: 16px;
 }
 
+
+/* Unsupported Nodes
+-----------------------------------------------------*/
+
+
+.unsupported {
+  cursor: not-allowed;
+  background: #eee;
+}
+
+/* Table nodes
+-----------------------------------------------------*/
+
+.table {
+  width: 100%;
+  margin: 10px 0px;
+  border: 1px solid #eee;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  border: 1px solid #ccc;
+}
+
+.table th {
+  font-weight: bold;
+  background: #eee;
+  text-align: center;
+}
+
+.table td {
+  padding: 2px 5px;
+}
+
+.table .selected {
+  background-color: cyan;
+}
+
+
 /* For debugging purposes */
 
 .scanline {
