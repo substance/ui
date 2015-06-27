@@ -12,11 +12,11 @@ var PanelMixin = Substance.extend({}, Panel.prototype, {
   },
 
   getPanelContentElement: function() {
-    return this.refs.panelContent.getDOMNode();
+    return React.findDOMNode(this.refs.panelContent);
   },
 
   getScrollableContainer: function() {
-    return this.refs.panelContent.getDOMNode();
+    return React.findDOMNode(this.refs.panelContent);
   },
 
   // Returns the cumulated height of a panel's content

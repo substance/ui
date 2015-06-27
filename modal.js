@@ -9,12 +9,12 @@ var ModalPanel = React.createClass({
   displayName: "ManageBibItemsPanel",
 
   componentDidMount: function() {
-    var modalEl = this.getDOMNode();
+    var modalEl = React.findDOMNode(this);
     $(modalEl).on('click', '.close-modal', this.handleCloseModal);
   },
 
   componentWillUnmount: function() {
-    var modalEl = this.getDOMNode();
+    var modalEl = React.findDOMNode(this);
     $(modalEl).off('click', '.close-modal', this.handleCloseModal);
   },
 

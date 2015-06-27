@@ -172,7 +172,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
   },
 
   getElement: function() {
-    return this.getDOMNode();
+    return React.findDOMNode(this);
   },
 
   getSurface: function() {

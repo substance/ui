@@ -55,7 +55,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
 
   updateScrollbar: function() {
     var scrollbar = this.refs.scrollbar;
-    var panelContentEl = this.refs.panelContent.getDOMNode();
+    var panelContentEl = React.findDOMNode(this.refs.panelContent);
 
     // We need to await next repaint, otherwise dimensions will be wrong
     Substance.delay(function() {
@@ -69,13 +69,13 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
 
 
   _onScroll: function(e) {
-    var panelContentEl = this.refs.panelContent.getDOMNode();
+    var panelContentEl = React.findDOMNode(this.refs.panelContent);
     this.refs.scrollbar.update(panelContentEl, this);
     this.markActiveTOCEntry();
   },
 
   markActiveTOCEntry: function() {
-    var panelContentEl = this.refs.panelContent.getDOMNode();
+    var panelContentEl = React.findDOMNode(this.refs.panelContent);
 
     var contentHeight = this.getContentHeight();
     var panelHeight = this.getPanelHeight();

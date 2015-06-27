@@ -13,7 +13,7 @@ var ContentTools = require("../content_tools");
 var ReaderMixin = _.extend({}, Substance.EventEmitter.prototype, ReaderControllerMixin, {
 
   componentDidMount: function() {
-    var domNode = this.getDOMNode();
+    var domNode = React.findDOMNode(this);
 
     $(domNode).on('click', '.container-annotation', this.handleReferenceToggle);
     $(domNode).on('click', '.annotation', this.handleReferenceToggle);

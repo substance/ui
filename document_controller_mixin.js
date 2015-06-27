@@ -388,7 +388,7 @@ var DocumentControllerMixin = {
   componentWillUnmount: function() {
     // some tools might need to get disposed
     this.toolRegistry.dispose();
-    this.clipboard.detach(this.getDOMNode());
+    this.clipboard.detach(React.findDOMNode(this));
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -406,7 +406,7 @@ var DocumentControllerMixin = {
     //     this.requestAutoSave();
     //   }.bind(this), 10000);
     // }
-    var rootElement = this.getDOMNode();
+    var rootElement = React.findDOMNode(this);
     var $clipboard = $(rootElement).find('.clipboard');
     this.clipboard = new Substance.Surface.Clipboard(this, $clipboard[0],
       this.context.htmlImporter, this.context.htmlExporter);

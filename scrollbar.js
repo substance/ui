@@ -26,7 +26,7 @@ var Scrollbar = React.createClass({
 
   mouseDown: function(e) {
     this._mouseDown = true;
-    var scrollBarOffset = $(this.getDOMNode()).offset().top;
+    var scrollBarOffset = $(React.findDOMNode(this)).offset().top;
     var y = e.pageY - scrollBarOffset;
     var thumbEl = this.refs.thumb.getDOMNode();
 
@@ -57,7 +57,7 @@ var Scrollbar = React.createClass({
 
   mouseMove: function(e) {
     if (this._mouseDown) {
-      var scrollBarOffset = $(this.getDOMNode()).offset().top;
+      var scrollBarOffset = $(React.findDOMNode(this)).offset().top;
       var y = e.pageY - scrollBarOffset;
 
       // find offset to visible-area.top
