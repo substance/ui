@@ -80,7 +80,7 @@ var DocumentControllerMixin = {
     }, this);
     this.toolRegistry = toolRegistry;
   },
-  
+
   _transactionStarted: function(tx) {
     // store the state so that it can be recovered when undo/redo
     tx.before.state = this.state;
@@ -93,24 +93,13 @@ var DocumentControllerMixin = {
   _onDocumentChanged: function(change, info) {
     this.doc.__dirty = true;
     var notifications = this.context.notifications;
-
-    window.myChange = change;
-
     notifications.addMessage({
       type: "info",
       message: "Unsaved changes"
     });
-
     // This is the undo/redo case
     if (info.replay) {
       this.replaceState(change.after.state);
-      var self = this;
-      window.setTimeout(function() {
-        if (change.after.surfaceName) {
-          var surface = self.surfaces[change.after.surfaceName];
-          surface.setSelection(change.after.selection);
-        }
-      });
     }
   },
 
@@ -159,16 +148,10 @@ var DocumentControllerMixin = {
   // Surface related
   // ----------------------
 
-  registerSurface: function(surface, name, options) {
-    name = name || Substance.uuid();
+  registerSurface: function(surface, options) {
+    name = surface.getName();
     options = options || {};
     this.surfaces[name] = surface;
-    if (surface.name) {
-      throw new Error("Surface has already been attached");
-    }
-    // HACK: we store a name on the surface for later decision making
-    surface.name = name;
-
     // HACK: we store enabled tools on the surface instance for later lookup
     surface.enabledTools = options.enabledTools || [];
 
@@ -223,7 +206,7 @@ var DocumentControllerMixin = {
       return $$(panelComponent, {
         doc: this.doc,
         app: this
-      });      
+      });
     } else {
       console.warn("Could not find component for contextId:", this.state.contextId);
     }
@@ -239,7 +222,7 @@ var DocumentControllerMixin = {
         return $$(modalPanelComponent, {
           doc: this.doc,
           app: this
-        });        
+        });
       } else {
         console.warn("Could not find component for contextId:", state.modal.contextId);
       }
