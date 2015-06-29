@@ -91,6 +91,7 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
       return $$('a', {
         className: classNames.join(" "),
         href: "#",
+        key: node.id,
         "data-id": node.id,
         onClick: this.handleClick
       }, node.content);

@@ -88,6 +88,7 @@ var TextTool = React.createClass({
     var availableTextTypes = [];
     availableTextTypes = _.map(textTypes, function(textType, textTypeId) {
       return $$('button', {
+        key: textTypeId,
         className: 'option '+textTypeId,
         "data-type": textTypeId,
         onMouseDown: this.handleSwitchTextType,
