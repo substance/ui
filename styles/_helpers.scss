@@ -8,6 +8,12 @@
   margin-left:auto;
   margin-right:auto;
 }
+
+.truncate {
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+}
  
 /* Typography */
 .small { font-size: 13px; line-height: 16px; }
