@@ -42,7 +42,7 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
     var needsUpdate = false;
 
     // Any headings updated? (also covers when new headings are arriving)
-    _.each(change.updated.root, function(update, nodeId) {
+    _.each(change.updated, function(update, nodeId) {
       var node = doc.get(nodeId);
       if (node.type === "heading") needsUpdate = true;
     });
@@ -53,7 +53,7 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
     });
 
     if (needsUpdate) {
-      console.log('updating');
+      // console.log('updating');
       this.setState({
         tocNodes: doc.getTOCNodes()
       });
@@ -87,7 +87,7 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
       if (state.activeNode === node.id) {
         classNames.push("active");
       }
-      
+
       return $$('a', {
         className: classNames.join(" "),
         href: "#",
