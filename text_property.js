@@ -131,6 +131,11 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     };
     var root = { children: [] };
     annotator.start(root, text, annotations);
+    // NOTE: this is particularly necessary for text-properties of
+    // block level text nodes. Otherwise, the element will not y-expand
+    // as desired, and soft-breaks are not visible.
+    // TODO: sometimes we do not want to do this. Make it configurable.
+    root.children.push($$('br'));
     return root.children;
   },
 
