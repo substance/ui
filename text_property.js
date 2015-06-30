@@ -142,7 +142,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     // block level text nodes. Otherwise, the element will not y-expand
     // as desired, and soft-breaks are not visible.
     // TODO: sometimes we do not want to do this. Make it configurable.
-    root.children.push($$('br'));
+    root.children.push($$('br', {key : 'br'}));
     return root.children;
   },
 
