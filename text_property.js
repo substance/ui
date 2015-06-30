@@ -105,7 +105,14 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
 
       var hightlighted = (highlightedAnnotations.indexOf(node.id) >= 0);
       // TODO: we need a component factory, so that we can create the appropriate component
-      var ViewClass = componentRegistry.get(node.type) || AnnotationComponent;
+      var ViewClass;
+
+      if (componentRegistry.contains(node.type)) {
+        ViewClass = componentRegistry.get(node.type);
+      } else {
+        ViewClass = AnnotationComponent;
+      }
+
       var classNames = [];
       if (hightlighted) {
         classNames.push('active');
