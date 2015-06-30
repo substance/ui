@@ -116,7 +116,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
     var doc = app.doc;
 
     var componentRegistry = this.context.componentRegistry;
-    var ContentContainerClass
+    var ContentContainerClass;
     // FIXME: this is called getContentEditor() but requires 'content_container'
     if (componentRegistry.contains("content_container")) {
       ContentContainerClass = componentRegistry.get("content_container");  
