@@ -1,12 +1,14 @@
 var Substance = require("substance");
-var Document = Substance.Document;
-var Selection = Document.Selection;
 var _ = require("substance/helpers");
-
 var Highlight = require("./text_property").Highlight;
 var ExtensionManager = require("./extension_manager");
-
 var Modal = require("./modal");
+
+var Document = Substance.Document;
+var Selection = Document.Selection;
+var Surface = Substance.Surface;
+var Clipboard = Surface.Clipboard;
+var SurfaceManager = Surface.SurfaceManager;
 
 var $$ = React.createElement;
 
@@ -79,6 +81,9 @@ var DocumentControllerMixin = {
       }, this);
     }, this);
     this.toolRegistry = toolRegistry;
+
+    this.surfaceManager = new SurfaceManager(doc);
+    this.clipboard = new Clipboard(this.surfaceManager, this.doc.getClipboardImporter(), this.doc.getClipboardExporter());
   },
 
   _transactionStarted: function(tx) {
@@ -149,8 +154,8 @@ var DocumentControllerMixin = {
   // ----------------------
 
   registerSurface: function(surface, options) {
-    name = surface.getName();
     options = options || {};
+    var name = surface.getName();
     this.surfaces[name] = surface;
     // HACK: we store enabled tools on the surface instance for later lookup
     surface.enabledTools = options.enabledTools || [];
@@ -193,7 +198,7 @@ var DocumentControllerMixin = {
     return this.extensionManager.handleAction(actionName);
   },
 
-  closeModal: function(actionName) {
+  closeModal: function() {
     var newState = _.cloneDeep(this.state);
     delete newState.modal;
     this.replaceState(newState);
@@ -318,8 +323,6 @@ var DocumentControllerMixin = {
   contextTypes: {
     backend: React.PropTypes.object.isRequired,
     notifications: React.PropTypes.object.isRequired,
-    htmlImporter: React.PropTypes.object.isRequired,
-    htmlExporter: React.PropTypes.object.isRequired
   },
 
   childContextTypes: {
@@ -332,6 +335,7 @@ var DocumentControllerMixin = {
     getHighlightsForTextProperty: React.PropTypes.func,
     componentRegistry: React.PropTypes.object,
     toolRegistry: React.PropTypes.object,
+    surfaceManager: React.PropTypes.object,
   },
 
   getChildContext: function() {
@@ -341,7 +345,8 @@ var DocumentControllerMixin = {
       getHighlightedNodes: this.getHighlightedNodes,
       getHighlightsForTextProperty: this.getHighlightsForTextProperty,
       componentRegistry: this.componentRegistry,
-      toolRegistry: this.toolRegistry
+      toolRegistry: this.toolRegistry,
+      surfaceManager: this.surfaceManager
     };
     return context;
   },
@@ -372,6 +377,7 @@ var DocumentControllerMixin = {
     // some tools might need to get disposed
     this.toolRegistry.dispose();
     this.clipboard.detach(React.findDOMNode(this));
+    this.surfaceManager.dispose();
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -390,9 +396,6 @@ var DocumentControllerMixin = {
     //   }.bind(this), 10000);
     // }
     var rootElement = React.findDOMNode(this);
-    var $clipboard = $(rootElement).find('.clipboard');
-    this.clipboard = new Substance.Surface.Clipboard(this, $clipboard[0],
-      this.context.htmlImporter, this.context.htmlExporter);
     this.clipboard.attach(rootElement);
   },
 
@@ -460,14 +463,11 @@ var DocumentControllerMixin = {
   },
 
   createModalPanel: function() {
-    var state = this.state;
     var modalPanelElement = this.getActiveModalPanelElement();
-
     if (!modalPanelElement) {
       // Just render an empty div if no modal active available
       return $$('div');
     }
-
     return $$(Modal, {
       panelElement: modalPanelElement
     });
