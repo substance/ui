@@ -50,6 +50,7 @@ var DropdownComponent = React.createClass({
 
     return $$('div', {className: classNames.join(' ')},
       $$('button', {
+        title: this.props.title,
         className: 'toggle',
         onMouseDown: this.handleDropdownToggle,
         onClick: this.handleClick
