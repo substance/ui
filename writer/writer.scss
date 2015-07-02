@@ -298,6 +298,10 @@
   background-color: cyan;
 }
 
+.table.table-editing-mode .text-property {
+  cursor: default;
+}
+
 
 /* For debugging purposes */
 
