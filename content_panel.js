@@ -87,9 +87,9 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
     var smartScanline = 2 * scrollBottom - contentHeight;
     var scanline = Math.max(regularScanline, smartScanline);
 
-    $('.scanline').css({
-      top: (scanline - scrollTop)+'px'
-    });
+    // $('.scanline').css({
+    //   top: (scanline - scrollTop)+'px'
+    // });
 
     // TODO: this should be generic
     var headings = $(panelContentEl).find('.content-node.heading');
@@ -142,7 +142,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
         highlights: app.getHighlightedNodes,
         ref: "scrollbar"
       }),
-      $$('div', {className: 'scanline'}),
+      // $$('div', {className: 'scanline'}),
       $$('div', {className: "panel-content", ref: "panelContent"}, // requires absolute positioning, overflow=auto
         this.getContentEditor()
       )
