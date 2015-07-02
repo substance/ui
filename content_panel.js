@@ -138,7 +138,8 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
       $$(Scrollbar, {
         id: "content-scrollbar",
         contextId: app.state.contextId,
-        highlights: app.getHighlightedNodes.bind(app),
+        // React says that we do not need to bind this method
+        highlights: app.getHighlightedNodes,
         ref: "scrollbar"
       }),
       $$('div', {className: 'scanline'}),
