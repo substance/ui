@@ -18,11 +18,16 @@ var ToolComponent = React.createClass({
     if (!toolName) {
       throw new Error('Prop "tool" is mandatory.');
     }
+
     this.tool = this.context.toolRegistry.get(toolName);
     if (!this.tool) {
       console.warn('No tool registered with name %s', toolName);
       this.tool = new ToolComponent.StubTool(toolName);
     }
+
+    // Derive initial state from tool
+    this.state = this.tool.state;
+
     this.tool.connect(this, {
       'toolstate:changed': this.onToolstateChanged
     });
@@ -47,13 +52,6 @@ var ToolComponent = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return (this.state.disabled !== nextState.disabled ||
       this.state.active !== nextState.active);
-  },
-
-  getInitialState: function() {
-    return {
-      disabled: true,
-      active: false
-    };
   },
 
   render: function() {
