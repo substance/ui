@@ -36,27 +36,61 @@ var TableToolComponent = React.createClass({
     if (this.state.disabled) {
       classNames.push('disabled');
     }
-    var label, sel;
+    var label, sel, colCount, rowCount;
+
     switch(this.props.tool) {
-      case "insert_columns":
-        if (this.state.disabled) {
-          label = i18n.t('menu.insert_column');
-        } else {
-          sel = this.tool.getToolState().sel;
-          var colCount = sel.endCol - sel.startCol + 1;
-          label = i18n.t('menu.insert_k_columns', { smart_count: colCount });
+    case "insert_columns":
+      if (this.state.disabled) {
+        if (this.props.mode === "before") {
+          label = i18n.t('insert_column_before');
+        } else if (this.props.mode === "after") {
+          label = i18n.t('insert_column_after');
         }
-        break;
-      case "insert_rows": {
-        if (this.state.disabled) {
-          label = i18n.t('menu.insert_row');
-        } else {
-          sel = this.tool.getToolState().sel;
-          var rowCount = sel.endRow - sel.startRow + 1;
-          label = i18n.t('menu.insert_k_rows', { smart_count: rowCount });
+      } else {
+        sel = this.tool.getToolState().sel;
+        colCount = sel.endCol - sel.startCol + 1;
+        if (this.props.mode === "before") {
+          label = i18n.t('insert_k_columns_before', { smart_count: colCount });
+        } else if (this.props.mode === "after") {
+          label = i18n.t('insert_k_columns_after', { smart_count: colCount });
         }
-        break;
       }
+      break;
+    case "delete_columns":
+      if (this.state.disabled) {
+        label = i18n.t('delete_column');
+      } else {
+        sel = this.tool.getToolState().sel;
+        colCount = sel.endCol - sel.startCol + 1;
+        label = i18n.t('delete_k_columns', { smart_count: colCount });
+      }
+      break;
+    case "insert_rows":
+      if (this.state.disabled) {
+        if (this.props.mode === "above") {
+          label = i18n.t('insert_row_above');
+        } else if (this.props.mode === "below") {
+          label = i18n.t('insert_row_below');
+        }
+      } else {
+        sel = this.tool.getToolState().sel;
+        rowCount = sel.endRow - sel.startRow + 1;
+        if (this.props.mode === "above") {
+          label = i18n.t('insert_k_rows_above', { smart_count: rowCount });
+        } else if (this.props.mode === "below") {
+          label = i18n.t('insert_k_rows_below', { smart_count: rowCount });
+        }
+      }
+      break;
+    case "delete_rows":
+      if (this.state.disabled) {
+        label = i18n.t('delete_row');
+      } else {
+        sel = this.tool.getToolState().sel;
+        rowCount = sel.endRow - sel.startRow + 1;
+        label = i18n.t('delete_k_rows', { smart_count: rowCount });
+      }
+      break;
     }
     return $$("button", {
       className: classNames.join(' '),
@@ -74,8 +108,12 @@ var TableToolComponent = React.createClass({
 
   handleClick: function(e) {
     e.preventDefault();
+  },
+
+  handleMouseDown: function(e) {
+    e.preventDefault();
     if (!this.state.disabled) {
-      this.tool.performAction();
+      this.tool.performAction(this.props);
     }
   },
 
