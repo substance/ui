@@ -55,12 +55,17 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
         nodeType = nodeData.type;
       } else {
         var id = op.path[0];
-        nodeType = doc.get(id).type;
+        var node = doc.get(id);
+        if (node) {
+          nodeType = node.type;
+        } else {
+          continue;
+        }
       }
       if (_.includes(tocTypes, nodeType)) {
         needsUpdate = true;
+        break;
       }
-      break;
     }
     if (needsUpdate) {
       // console.log('updating');
