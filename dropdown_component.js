@@ -43,11 +43,12 @@ var DropdownComponent = React.createClass({
   // because only that way we can keep the disabled states accurate
   render: function() {
     var classNames = ['dropdown'];
-
+    if (this.props.classNames) {
+      classNames = classNames.concat(this.props.classNames);
+    }
     if (this.state.open) {
       classNames.push('open');
     }
-
     return $$('div', {className: classNames.join(' ')},
       $$('button', {
         title: this.props.title,
