@@ -70,7 +70,7 @@ var TextTool = React.createClass({
     var label;
 
     if (isTextContext) {
-      label = textTypes[this.state.currentTextType].label;
+      label = i18n.t(textTypes[this.state.currentTextType].label);
     } else if (this.state.currentContext) {
       // TODO: we should play with some i18n framework to retrieve labels
       label = i18n.t(this.state.currentContext);
