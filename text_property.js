@@ -59,10 +59,6 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     }, this.renderChildren());
   },
 
-  componentDidUpdate: function() {
-    this.getSurface().rerenderDomSelection();
-  },
-
   renderChildren: function() {
     var componentRegistry = this.context.componentRegistry;
     var doc = this.getDocument();
