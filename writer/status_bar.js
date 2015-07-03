@@ -42,7 +42,7 @@ var StatusBar = React.createClass({
     var message = this.state.message;
     var notificationsEl;
 
-    var classNames = ["status-bar-component"];
+    var classNames = ["status-bar-component fill-light"];
 
     if (message) {
       classNames.push(message.type);

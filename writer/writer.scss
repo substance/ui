@@ -39,6 +39,7 @@
 
 
 .writer-component .context-toggles {
+  display: none; /* temp disabled */
   height: 40px;
   border-bottom: 1px solid #ddd;
 }
@@ -100,7 +101,7 @@
 
 .panel {
   position: absolute;
-  top: 40px;
+  top: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -228,9 +229,9 @@
 
 .content-panel-component .document-title {
   padding-bottom: 40px;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
-  line-height: 30px;
+  line-height: 40px;
 }
 
 .content-panel-component .document-title .strong {
@@ -379,7 +380,6 @@
 -----------------------------------------------------*/
 
 .status-bar-component {
-  background: #eee;
   border-top: 1px solid #ddd;
   position: fixed;
   height: 25px;
