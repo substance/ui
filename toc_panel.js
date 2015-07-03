@@ -43,7 +43,7 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
     var tocTypes = doc.getSchema().getTocTypes();
     // HACK: this is not totally correct but works.
     // Actually, the TOC should be updated if tocType nodes
-    // get inserted or removed from the container + property changes
+    // get inserted or removed from the container, plus any property changes
     // This implementation just checks for changes of the node type
     // not the container, but as we usually create and show in
     // a single transaction this works.
@@ -53,24 +53,22 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
       if (op.isCreate() || op.isDelete()) {
         var nodeData = op.getValue();
         nodeType = nodeData.type;
+        if (_.includes(tocTypes, nodeType)) {
+          needsUpdate = true;
+          break;
+        }
       } else {
         var id = op.path[0];
         var node = doc.get(id);
-        if (node) {
-          nodeType = node.type;
-        } else {
-          continue;
+        if (_.includes(tocTypes, node.type)) {
+          needsUpdate = true;
+          break;
         }
-      }
-      if (_.includes(tocTypes, nodeType)) {
-        needsUpdate = true;
-        break;
       }
     }
     if (needsUpdate) {
-      // console.log('updating');
-      this.setState({
-        tocNodes: doc.getTOCNodes()
+      return this.setState({
+       tocNodes: doc.getTOCNodes()
       });
     }
   },
