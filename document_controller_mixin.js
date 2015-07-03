@@ -83,6 +83,7 @@ var DocumentControllerMixin = {
     this.toolRegistry = toolRegistry;
 
     this.surfaceManager = new SurfaceManager(doc);
+    this.clipboard = new Clipboard(this.surfaceManager, this.doc.getClipboardImporter(), this.doc.getClipboardExporter());
   },
 
   _transactionStarted: function(tx) {
@@ -375,6 +376,7 @@ var DocumentControllerMixin = {
   componentWillUnmount: function() {
     // some tools might need to get disposed
     this.toolRegistry.dispose();
+    this.clipboard.detach(React.findDOMNode(this));
     this.surfaceManager.dispose();
   },
 
@@ -393,6 +395,8 @@ var DocumentControllerMixin = {
     //     this.requestAutoSave();
     //   }.bind(this), 10000);
     // }
+    var rootElement = React.findDOMNode(this);
+    this.clipboard.attach(rootElement);
   },
 
   handleAction: function(actionName) {
