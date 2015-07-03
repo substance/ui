@@ -28,7 +28,7 @@ var WriterMixin = _.extend({}, WriterControllerMixin, Substance.EventEmitter.pro
       $$(StatusBar, {
         doc: this.props.doc
       }),
-      $$('div', {className: "clipboard"})
+      $$('div', {className: "clipboard", id: "clipboard", contentEditable: "true"})
     );
   },
 
