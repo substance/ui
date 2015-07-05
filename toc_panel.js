@@ -60,7 +60,7 @@ var TOCPanelMixin = _.extend({}, PanelMixin, {
       } else {
         var id = op.path[0];
         var node = doc.get(id);
-        if (_.includes(tocTypes, node.type)) {
+        if (node && _.includes(tocTypes, node.type)) {
           needsUpdate = true;
           break;
         }
