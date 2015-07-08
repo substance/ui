@@ -352,7 +352,8 @@ var DocumentControllerMixin = {
   },
 
   getInitialState: function() {
-    return {"contextId": "toc"};
+    var defaultContextId = this.props.contextId;
+    return {"contextId": defaultContextId || "toc"};
   },
 
   // Internal methods
