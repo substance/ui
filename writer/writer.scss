@@ -37,9 +37,7 @@
   box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
 }
 
-
 .writer-component .context-toggles {
-  display: none; /* temp disabled */
   height: 40px;
   border-bottom: 1px solid #ddd;
 }
@@ -436,7 +434,6 @@
 .annotation.emphasis {
   font-style: italic;
 }
-
 
 /* Container Annotations
 -----------------------------------------------------*/

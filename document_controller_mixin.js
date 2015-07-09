@@ -429,38 +429,28 @@ var DocumentControllerMixin = {
 
   // Toggles for explicitly switching between context panels
   createContextToggles: function() {
-    // var panels = this.getPanels();
+    var panelOrder = this.props.config.panelOrder;
+    var contextId = this.state.contextId;
+    var toggleComps = [];
 
-    // var contextId = this.state.contextId;
-    // var self = this;
+    _.each(panelOrder, function(panelId) {
+      var panelClass = this.componentRegistry.get(panelId);
+      var className = ["toggle-context"];
+      if (panelClass.contextId === contextId) {
+        className.push("active");
+      }
 
-    // var panelComps = panels.map(function(panelClass) {
-    //   // We don't show inactive stuff here
-    //   if (panelClass.isDialog && panelClass.contextId !== contextId) return null;
+      toggleComps.push($$('a', {
+        className: className.join(" "),
+        href: "#",
+        key: panelClass.contextId,
+        "data-id": panelClass.contextId,
+        onClick: this.handleContextToggle,
+        dangerouslySetInnerHTML: {__html: '<i class="fa '+panelClass.icon+'"></i> <span class="label">'+panelClass.displayName+'</span>'}
+      }));
+    }, this);
 
-    //   var className = ["toggle-context"];
-    //   if (panelClass.contextId === contextId) {
-    //     className.push("active");
-    //   }
-
-    //   if (panelClass.isDialog) {
-    //     return $$('div');
-    //   } else {
-    //     return $$('a', {
-    //       className: className.join(" "),
-    //       href: "#",
-    //       key: panelClass.contextId,
-    //       "data-id": panelClass.contextId,
-    //       onClick: self.handleContextToggle,
-    //       dangerouslySetInnerHTML: {__html: '<i class="fa '+panelClass.icon+'"></i> <span class="label">'+panelClass.displayName+'</span>'}
-    //     });
-    //   }
-    // });
-
-    // return $$('div', {className: "context-toggles"},
-    //   Substance.compact(panelComps)
-    // );
-    return $$('div', {className: 'context-toggles'});
+    return $$('div', {className: "context-toggles"}, toggleComps);
   },
 
   createModalPanel: function() {
