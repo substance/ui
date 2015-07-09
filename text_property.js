@@ -14,8 +14,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
   contextTypes: {
     surface: React.PropTypes.object.isRequired,
     componentRegistry: React.PropTypes.object.isRequired,
-    getHighlightedNodes: React.PropTypes.func.isRequired,
-    getHighlightsForTextProperty: React.PropTypes.func.isRequired
+    getHighlightedNodes: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
@@ -65,10 +64,11 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     var path = this.getPath();
     var text = doc.get(path) || "";
     var annotations = this.getAnnotations();
-    var highlightedAnnotations = [];
-    if (this.context.getHighlightedNodes) {
-      this.context.getHighlightedNodes();
-    }
+
+    // plus fragments of active container annotations
+
+    var highlightedAnnotations = this.getHighlights();
+
     var annotator = new Annotator();
     var fragmentCounters = {};
     // for debugging
@@ -98,7 +98,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       // for debugging
       // console.log(_logPrefix+"<"+node.type+" key="+key+">");
 
-      var hightlighted = (highlightedAnnotations.indexOf(node.id) >= 0);
+      var highlighted = (highlightedAnnotations.indexOf(node.id) >= 0);
       // TODO: we need a component factory, so that we can create the appropriate component
       var ViewClass;
 
@@ -109,7 +109,17 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       }
 
       var classNames = [];
-      if (hightlighted) {
+      // special support for container annotation fragments
+      if (node.type === "container_annotation_fragment") {
+        // TODO: this seems a bit messy
+        classNames = classNames.concat(node.anno.getTypeNames().join(' ').replace(/_/g, "-").split());
+        classNames.push("annotation-fragment");
+      } else if (node.type === "container-annotation-anchor") {
+        classNames = classNames.concat(node.anno.getTypeNames().join(' ').replace(/_/g, "-").split());
+        classNames.push("anchor");
+        classNames.push(node.isStart?"start-anchor":"end-anchor");
+      }
+      if (highlighted) {
         classNames.push('active');
       }
       return {
@@ -148,18 +158,26 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     var annotations = doc.getIndex('annotations').get(path);
     var containerName = surface.getContainerName();
     if (containerName) {
-      var anchors = doc.getIndex('container-annotations').get(path, containerName);
+      // Anchors
+      var anchors = doc.getIndex('container-annotation-anchors').get(path, containerName);
       annotations = annotations.concat(anchors);
+      // Fragments
+      // FIXME: ATM containerAnnotationIndex is not registered as a regular document index
+      // but is updated as a change listener instead.
+      var fragments = doc.containerAnnotationIndex.getFragments(path, containerName);
+      annotations = annotations.concat(fragments);
     }
-    var highlights = this.context.getHighlightsForTextProperty(this);
-    annotations = annotations.concat(highlights);
     return annotations;
   },
 
   // Annotations that are active (not just visible)
   // The ones that have will get an .active class
   getHighlights: function() {
-    return this.context.getHighlightedNodes();
+    if (this.context.getHighlightedNodes) {
+      return this.context.getHighlightedNodes();
+    } else {
+      return [];
+    }
   },
 
   textPropertyDidChange: function() {
@@ -187,22 +205,5 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
   },
 
 }));
-
-TextPropertyComponent.Highlight = function(path, startOffset, endOffset, options) {
-  options = options || {};
-  this.id = options.id;
-  this.path = path;
-  this.startOffset = startOffset;
-  this.endOffset = endOffset;
-  this.classNames = options.classNames;
-};
-
-Substance.initClass(TextPropertyComponent.Highlight);
-
-TextPropertyComponent.Highlight.prototype.getClassNames = function() {
-  return this.classNames;
-};
-
-TextPropertyComponent.Highlight.static.level = Number.MAX_VALUE;
 
 module.exports = TextPropertyComponent;

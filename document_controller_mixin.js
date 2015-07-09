@@ -242,32 +242,6 @@ var DocumentControllerMixin = {
     return this.extensionManager.getHighlightedNodes();
   },
 
-  // This belongs to container annotations
-  // A higlight is a container annotations fragment
-  getHighlightsForTextProperty: function(textProperty) {
-    var doc = this.doc;
-    var container = textProperty.getContainer();
-
-    var highlightsIndex = new Substance.PathAdapter.Arrays();
-    if (container) {
-      var activeContainerAnnotations = this.getActiveContainerAnnotations();
-
-      _.each(activeContainerAnnotations, function(annoId) {
-        var anno = doc.get(annoId);
-        if (!anno) return;
-        var fragments = container.getAnnotationFragments(anno);
-        _.each(fragments, function(frag) {
-          highlightsIndex.add(frag.path, new Highlight(frag.path, frag.startOffset, frag.endOffset, {
-            id: anno.id, classNames: anno.getClassNames().replace(/_/g, "-")+" annotation-fragment"
-          }));
-        });
-      });
-
-      return highlightsIndex.get(textProperty.props.path) || [];
-    } else {
-      return [];
-    }
-  },
 
   deleteAnnotation: function(annotationId) {
     var anno = this.doc.get(annotationId);

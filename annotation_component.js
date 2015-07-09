@@ -4,7 +4,8 @@ var AnnotationComponent = React.createClass({
   name: "annotation-component",
   displayName: "AnnotationComponent",
   getClassName: function() {
-    var classNames = this.props.node.getClassNames();
+    var typeNames = this.props.node.getTypeNames();
+    var classNames = typeNames.join(' ');
     if (this.props.classNames) {
       classNames += " " + this.props.classNames.join(' ');
     }
