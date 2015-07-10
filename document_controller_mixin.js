@@ -204,14 +204,20 @@ var DocumentControllerMixin = {
     this.replaceState(newState);
   },
 
+
+  _panelPropsFromState: function (state) {
+    var props = _.omit(state, 'contextId');
+    props.doc = this.doc;
+    // Legacy: panels should only access the app using this.context.app
+    props.app = this;
+    return props;
+  },
+
   getActivePanelElement: function() {
     var panelComponent = this.componentRegistry.get(this.state.contextId);
 
     if (panelComponent) {
-      return $$(panelComponent, {
-        doc: this.doc,
-        app: this
-      });
+      return $$(panelComponent, this._panelPropsFromState(this.state));
     } else {
       console.warn("Could not find component for contextId:", this.state.contextId);
     }
@@ -222,12 +228,8 @@ var DocumentControllerMixin = {
 
     if (state.modal) {
       var modalPanelComponent = this.componentRegistry.get(state.modal.contextId);
-
       if (modalPanelComponent) {
-        return $$(modalPanelComponent, {
-          doc: this.doc,
-          app: this
-        });
+        return $$(modalPanelComponent, this._panelPropsFromState(state.modal));
       } else {
         console.warn("Could not find component for contextId:", state.modal.contextId);
       }
