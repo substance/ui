@@ -57,6 +57,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
 
   updateScroll: function() {
     var app = this.context.app;
+    if (app.state.noScroll) return;
     var targetNodes = app.getHighlightedNodes();
     if (targetNodes && targetNodes.length > 0) {
       this.scrollToNode(targetNodes[0]);
