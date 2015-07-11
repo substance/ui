@@ -23,6 +23,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
   componentDidMount: function() {
     var app = this.context.app;
     this.updateScrollbar();
+    this.updateScroll();
     $(window).on('resize', this.updateScrollbar);
 
     var doc = app.doc;
@@ -51,6 +52,15 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
 
   componentDidUpdate: function() {
     this.updateScrollbar();
+    this.updateScroll();
+  },
+
+  updateScroll: function() {
+    var app = this.context.app;
+    var targetNodes = app.getHighlightedNodes();
+    if (targetNodes && targetNodes.length > 0) {
+      this.scrollToNode(targetNodes[0]);
+    }
   },
 
   updateScrollbar: function() {
