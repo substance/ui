@@ -1,19 +1,22 @@
+'use strict';
+
 var $$ = React.createElement;
 var Substance = require('substance');
 
 // ToolComponent
 // -------------
 
-var ToolComponent = React.createClass({
+class ToolComponent extends React.Component {
 
-  displayName: "ToolComponent",
+  constructor(props) {
+    super(props);
 
-  contextTypes: {
-    toolRegistry: React.PropTypes.object.isRequired,
-    app: React.PropTypes.object.isRequired
-  },
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.onToolstateChanged = this.onToolstateChanged.bind(this);
+  }
 
-  componentWillMount: function() {
+  componentWillMount() {
     var toolName = this.props.tool;
     if (!toolName) {
       throw new Error('Prop "tool" is mandatory.');
@@ -27,34 +30,34 @@ var ToolComponent = React.createClass({
 
     // Derive initial state from tool
     this.state = this.tool.state;
-
+    console.log('le state', this.state);
     this.tool.connect(this, {
       'toolstate:changed': this.onToolstateChanged
     });
-  },
+  }
 
-  onToolstateChanged: function(toolState, tool, oldState) {
-    this.replaceState(toolState);
-  },
+  onToolstateChanged(toolState/*, tool, oldState*/) {
+    this.setState(toolState);
+  }
 
-  handleClick: function(e) {
+  onClick(e) {
     e.preventDefault();
-  },
+  }
 
-  handleMouseDown: function(e) {
+  onMouseDown(e) {
     e.preventDefault();
     if (this.state.disabled) {
       return;
     }
     this.tool.performAction(this.context.app);
-  },
+  }
 
-  shouldComponentUpdate: function(nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return (this.state.disabled !== nextState.disabled ||
       this.state.active !== nextState.active);
-  },
+  }
 
-  render: function() {
+  render() {
     var classNames = [];
 
     if (this.props.classNames) {
@@ -71,11 +74,19 @@ var ToolComponent = React.createClass({
     return $$("button", {
       className: classNames.join(' '),
       title: this.props.title,
-      onMouseDown: this.handleMouseDown,
-      onClick: this.handleClick
+      onMouseDown: this.onMouseDown,
+      onClick: this.onClick
     }, this.props.children);
   }
-});
+}
+
+ToolComponent.displayName = "ToolComponent";
+
+ToolComponent.contextTypes = {
+  toolRegistry: React.PropTypes.object.isRequired,
+  app: React.PropTypes.object.isRequired
+};
+
 
 ToolComponent.StubTool = Substance.Surface.Tool.extend({
 
