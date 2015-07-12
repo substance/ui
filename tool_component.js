@@ -30,7 +30,6 @@ class ToolComponent extends React.Component {
 
     // Derive initial state from tool
     this.state = this.tool.state;
-    console.log('le state', this.state);
     this.tool.connect(this, {
       'toolstate:changed': this.onToolstateChanged
     });
