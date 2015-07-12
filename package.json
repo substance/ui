@@ -10,6 +10,9 @@
     "express": "*",
     "node-sass": "3.x"
   },
+  "browserify": {
+    "transform": ["babelify"]
+  },
   "readmeFilename": "README.md",
   "_id": "substance-ui@0.1.0",
   "_shasum": "40d0e38ca96ece125d49f4451fe6a0a8814e18dd",
