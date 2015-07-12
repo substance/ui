@@ -48,7 +48,7 @@ class ToolComponent extends React.Component {
     if (this.state.disabled) {
       return;
     }
-    this.tool.performAction(this.context.app);
+    this.tool.performAction();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -82,8 +82,7 @@ class ToolComponent extends React.Component {
 ToolComponent.displayName = "ToolComponent";
 
 ToolComponent.contextTypes = {
-  toolRegistry: React.PropTypes.object.isRequired,
-  app: React.PropTypes.object.isRequired
+  toolRegistry: React.PropTypes.object.isRequired
 };
 
 
@@ -93,7 +92,7 @@ ToolComponent.StubTool = Substance.Surface.Tool.extend({
     this.name = name;
   },
 
-  performAction: function(/*app*/) {
+  performAction: function() {
     console.log('Stub-Tool %s', this.name);
   }
 });
