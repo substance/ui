@@ -14,7 +14,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
   contextTypes: {
     surface: React.PropTypes.object.isRequired,
     componentRegistry: React.PropTypes.object.isRequired,
-    getHighlightedNodes: React.PropTypes.func.isRequired
+    getHighlightedNodes: React.PropTypes.func
   },
 
   getInitialState: function() {
