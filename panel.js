@@ -1,31 +1,29 @@
-// Deprecated API : Inherit from panel.js instead!
+'use strict';
 
 var $$ = React.createElement;
 
-var Substance = require("substance");
-var Panel = Substance.Surface.Panel;
+// This is an abstract class
+class Panel extends React.Component {
 
 
-var PanelMixin = Substance.extend({}, Panel.prototype, {
-
-  getDocument: function() {
+  getDocument() {
     var app = this.context.app;
     return app.doc;
-  },
+  }
 
-  getPanelContentElement: function() {
+  getPanelContentElement() {
     return React.findDOMNode(this.refs.panelContent);
-  },
+  }
 
-  getScrollableContainer: function() {
+  getScrollableContainer() {
     return React.findDOMNode(this.refs.panelContent);
-  },
+  }
 
   // Returns the cumulated height of a panel's content
-  getContentHeight: function() {
+  getContentHeight() {
     // initialized lazily as this element is not accessible earlier (e.g. during construction)
     // get the new dimensions
-    // TODO: use outerheight for contentheight determination?
+    // TODO: better use outerheight for contentheight determination?
     var contentHeight = 0;
     var panelContentEl = this.getPanelContentElement();
 
@@ -33,19 +31,28 @@ var PanelMixin = Substance.extend({}, Panel.prototype, {
      contentHeight += $(this).outerHeight();
     });
     return contentHeight;
-  },
+  }
 
   // Returns the height of panel (inner content overflows)
-  getPanelHeight: function() {
+  getPanelHeight() {
     var panelContentEl = this.getPanelContentElement();
     return $(panelContentEl).height();
-  },
+  }
 
-  getScrollPosition: function() {
+  getScrollPosition() {
     var panelContentEl = this.getPanelContentElement();
     return $(panelContentEl).scrollTop();
   }
 
-});
+  // This method must be overriden with your panel implementation
+  render() {
+    return $$("div", {className: "panel"},
+      $$('div', {className: 'panel-content'}, 'YOUR_PANEL_CONTENT')
+    );
+  }
 
-module.exports = PanelMixin;
+}
+
+Panel.displayName = "Panel";
+
+module.exports = Panel;
