@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var Substance = require('substance');
 var Document = Substance.Document;
