@@ -12,6 +12,7 @@ var Clipboard = Surface.Clipboard;
 var SurfaceManager = Surface.SurfaceManager;
 var ToolComponent = require('substance-ui/tool_component');
 var TextToolComponent = require('substance-ui/text_tool_component');
+var BodyContainer = require('./body_container');
 
 var components = {
   "paragraph": require('substance-ui/paragraph_component'),
@@ -19,70 +20,6 @@ var components = {
 };
 
 var tools = Surface.Tools;
-
-// Body container
-// ----------------
-// 
-// A simple rich text editor implementation based on Substance
-
-class BodyContainer extends React.Component {
-
-  // before it will be mounted the first time
-  componentWillMount() {
-    var doc = this.props.doc;
-    doc.connect(this, {
-      'document:changed': this.onDocumentChanged
-    });
-  }
-
-  // new doc arriving (bind change events again to new document)
-  componentWillReceiveProps(props) {
-    this.props.doc.disconnect(this);
-
-    var doc = props.doc;
-    doc.connect(this, {
-      'document:changed': this.onDocumentChanged
-    });
-  }
-
-  // unbind event handlers before component gets unmounted
-  componentWillUnmount() {
-    this.props.doc.disconnect(this);
-  }
-
-  onDocumentChanged(change) {
-    var doc = this.props.doc;
-    if (change.isAffected(['body', 'nodes'])) {
-      this.forceUpdate();
-    }
-  }
-
-  render() {
-    var doc = this.props.doc;
-    console.log('le doc', doc);
-    var containerNode = doc.get('body');
-    var componentRegistry = this.context.componentRegistry;
-
-    // Prepare container components (aka nodes)
-    // ---------
-
-    var components = [];
-    components = components.concat(containerNode.nodes.map(function(nodeId) {
-      var node = doc.get(nodeId);
-      var ComponentClass = componentRegistry.get(node.type);
-      return $$(ComponentClass, { key: node.id, doc: doc, node: node });
-    }.bind(this)));
-
-    return $$('div', {className: 'body-nodes', contentEditable: true, spellCheck: false},
-      components
-    );
-  }
-}
-
-BodyContainer.contextTypes = {
-  componentRegistry: React.PropTypes.object.isRequired
-};
-
 
 // HtmlEditor
 // ----------------
