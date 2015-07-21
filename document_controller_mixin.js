@@ -367,11 +367,11 @@ var DocumentControllerMixin = {
   },
 
   componentDidMount: function() {
-    // if (!window.devMode) {
-    //   setInterval(function() {
-    //     this.requestAutoSave();
-    //   }.bind(this), 10000);
-    // }
+    if (!window.devMode) {
+      setInterval(function() {
+        this.requestSave();
+      }.bind(this), 10000);
+    }
     var rootElement = React.findDOMNode(this);
     this.clipboard.attach(rootElement);
   },
