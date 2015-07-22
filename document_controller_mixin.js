@@ -370,7 +370,7 @@ var DocumentControllerMixin = {
     if (!window.devMode) {
       setInterval(function() {
         this.requestSave();
-      }.bind(this), 10000);
+      }.bind(this), 30000);
     }
     var rootElement = React.findDOMNode(this);
     this.clipboard.attach(rootElement);
