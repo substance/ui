@@ -162,8 +162,6 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       var anchors = doc.getIndex('container-annotation-anchors').get(path, containerName);
       annotations = annotations.concat(anchors);
       // Fragments
-      // FIXME: ATM containerAnnotationIndex is not registered as a regular document index
-      // but is updated as a change listener instead.
       var fragments = doc.containerAnnotationIndex.getFragments(path, containerName);
       annotations = annotations.concat(fragments);
     }
