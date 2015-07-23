@@ -12,11 +12,11 @@ var Clipboard = Surface.Clipboard;
 var SurfaceManager = Surface.SurfaceManager;
 var ToolComponent = require('substance-ui/tool_component');
 var TextToolComponent = require('substance-ui/text_tool_component');
-var BodyContainer = require('./body_container');
+var ContainerComponent = require('../container_component');
 
 var components = {
-  "paragraph": require('substance-ui/paragraph_component'),
-  "heading": require('substance-ui/heading_component')
+  "paragraph": require('../paragraph_component'),
+  "heading": require('../heading_component')
 };
 
 var tools = Surface.Tools;
@@ -36,30 +36,21 @@ class HtmlEditor extends React.Component {
     var editor = new ContainerEditor('body');
     var surface = new Surface(surfaceManager, doc, editor);
 
-    var debouncedOnContentChanged;
-
-    if (props.onContentChanged) {
-      debouncedOnContentChanged = _.debounce(props.onContentChanged, 1000);
-    }
-
     return {
       doc: doc,
       surfaceManager: surfaceManager,
       clipboard: clipboard,
       editor: editor,
-      surface: surface,
-      debouncedOnContentChanged: debouncedOnContentChanged
+      surface: surface
     };
   }
 
   initializeComponent() {
     // We may have already initialized the stuff
-    var doc = this.state.doc;
     var surfaceManager = this.state.surfaceManager;
     var surface = this.state.surface;
     var clipboard = this.state.clipboard;
     var bodyContainerEl = React.findDOMNode(this.refs.bodyContainer);
-
 
     surfaceManager.registerSurface(surface, {
       enabledTools: this.props.enabledTools
@@ -140,10 +131,11 @@ class HtmlEditor extends React.Component {
   render() {
     var doc = this.state.doc;
 
-    return $$('div', {className: 'editor-component'},
+    return $$('div', {className: 'html-editor-component'},
       this.props.toolbar ? $$(this.props.toolbar) : $$('div'),
-      $$(BodyContainer, {
+      $$(ContainerComponent, {
         ref: 'bodyContainer',
+        containerId: 'body',
         doc: doc
       })
     );
