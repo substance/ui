@@ -366,6 +366,11 @@ var DocumentControllerMixin = {
     return true;
   },
 
+  componentWillUpdate: function(nextProps, newState) {
+    var oldState = this.state;
+    this.extensionManager.handleStateChange(newState, oldState);
+  },
+
   componentDidMount: function() {
     if (!window.devMode) {
       setInterval(function() {

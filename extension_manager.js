@@ -59,6 +59,10 @@ ExtensionManager.Prototype = function() {
     return this.handle("handleAnnotationToggle", annotationId);
   };
 
+  this.handleStateChange = function(newState, oldState) {
+    return this.handle("handleStateChange", newState, oldState);
+  };
+
   // Based on a certain writer state, determine which nodes
   // should be highlighted in the scrollbar and in the document
   this.getHighlightedNodes = function() {
