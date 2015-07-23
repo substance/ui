@@ -18,23 +18,11 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
   },
 
   getInitialState: function() {
-    return { highlights: [] };
+    return {};
   },
 
   shouldComponentUpdate: function() {
-    var textAnnotations = _.pluck(this.getAnnotations(), 'id');
-    var textHighlights = _.intersection(textAnnotations, this.getHighlights());
-    var shouldUpdate = true;
-    if (this._prevTextAnnotations) {
-      if (_.isEqual(textAnnotations, this._prevTextAnnotations) &&
-          _.isEqual(textHighlights, this._prevTextHighlights)) {
-        shouldUpdate = false;
-      }
-    }
-    // Remember so we can check the next update
-    this._prevTextAnnotations = textAnnotations;
-    this._prevTextHighlights = textHighlights;
-    return shouldUpdate;
+    return false;
   },
 
   componentDidMount: function() {
@@ -65,10 +53,6 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
     var text = doc.get(path) || "";
     var annotations = this.getAnnotations();
 
-    // plus fragments of active container annotations
-
-    var highlightedAnnotations = this.getHighlights();
-
     var annotator = new Annotator();
     var fragmentCounters = {};
     // for debugging
@@ -98,10 +82,8 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
       // for debugging
       // console.log(_logPrefix+"<"+node.type+" key="+key+">");
 
-      var highlighted = (highlightedAnnotations.indexOf(node.id) >= 0);
       // TODO: we need a component factory, so that we can create the appropriate component
       var ViewClass;
-
       if (componentRegistry.contains(node.type)) {
         ViewClass = componentRegistry.get(node.type);
       } else {
@@ -118,9 +100,6 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
         classNames = classNames.concat(node.anno.getTypeNames().join(' ').replace(/_/g, "-").split());
         classNames.push("anchor");
         classNames.push(node.isStart?"start-anchor":"end-anchor");
-      }
-      if (highlighted) {
-        classNames.push('active');
       }
       return {
         ViewClass: ViewClass,

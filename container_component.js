@@ -2,12 +2,14 @@
 
 var $$ = React.createElement;
 
-// Body container
+// Container Component
 // ----------------
 // 
-// A simple rich text editor implementation based on Substance
+// Markup for a Substance Container
+//
+// Listens to document updates to the container
 
-class BodyContainer extends React.Component {
+class ContainerComponent extends React.Component {
 
   // before it will be mounted the first time
   componentWillMount() {
@@ -27,20 +29,26 @@ class BodyContainer extends React.Component {
     });
   }
 
+  // We will leave this unmanaged by react and instead use our own
+  // event mechanism to update only what needs an update
+  shouldComponentUpdate() {
+    return false;
+  }
+
   // unbind event handlers before component gets unmounted
   componentWillUnmount() {
     this.props.doc.disconnect(this);
   }
 
   onDocumentChanged(change) {
-    if (change.isAffected(['body', 'nodes'])) {
+    if (change.isAffected([this.props.containerId, 'nodes'])) {
       this.forceUpdate();
     }
   }
 
   render() {
     var doc = this.props.doc;
-    var containerNode = doc.get('body');
+    var containerNode = doc.get(this.props.containerId);
     var componentRegistry = this.context.componentRegistry;
 
     // Prepare container components (aka nodes)
@@ -53,15 +61,15 @@ class BodyContainer extends React.Component {
       return $$(ComponentClass, { key: node.id, doc: doc, node: node });
     }.bind(this)));
 
-    return $$('div', {className: 'body-nodes', contentEditable: true, spellCheck: false},
+    return $$('div', {className: 'container-nodes', contentEditable: true, spellCheck: false},
       components
     );
   }
 }
 
-BodyContainer.contextTypes = {
+ContainerComponent.contextTypes = {
   componentRegistry: React.PropTypes.object.isRequired
 };
 
 
-module.exports = BodyContainer;
+module.exports = ContainerComponent;
