@@ -152,20 +152,7 @@ var TextPropertyComponent = React.createClass(Substance.extend({}, TextProperty.
   },
 
   getAnnotations: function() {
-    var doc = this.props.doc;
-    var surface = this.context.surface;
-    var path = this.props.path;
-    var annotations = doc.getIndex('annotations').get(path);
-    var containerName = surface.getContainerName();
-    if (containerName) {
-      // Anchors
-      var anchors = doc.getIndex('container-annotation-anchors').get(path, containerName);
-      annotations = annotations.concat(anchors);
-      // Fragments
-      var fragments = doc.containerAnnotationIndex.getFragments(path, containerName);
-      annotations = annotations.concat(fragments);
-    }
-    return annotations;
+    return this.context.surface.getAnnotationsForProperty(this.props.path);
   },
 
   // Annotations that are active (not just visible)
