@@ -35,11 +35,6 @@ class ContainerComponent extends React.Component {
     return false;
   }
 
-  // This should not happen
-  componentDidUpdate() {
-    console.log('ContainerComponent.didupdate');
-  }
-
   // unbind event handlers before component gets unmounted
   componentWillUnmount() {
     this.props.doc.disconnect(this);
