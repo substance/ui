@@ -29,6 +29,17 @@ class ContainerComponent extends React.Component {
     });
   }
 
+  // We will leave this unmanaged by react and instead use our own
+  // event mechanism to update only what needs an update
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  // This should not happen
+  componentDidUpdate() {
+    console.log('ContainerComponent.didupdate');
+  }
+
   // unbind event handlers before component gets unmounted
   componentWillUnmount() {
     this.props.doc.disconnect(this);

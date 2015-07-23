@@ -47,7 +47,7 @@ var DocumentControllerMixin = {
       'document:changed': this._onDocumentChanged
     });
 
-    this._onSelectionChangedDebounced = _.debounce(this._onSelectionChanged, 100);
+    this._onSelectionChangedDebounced = _.debounce(this._onSelectionChanged, 50);
 
     // Note: we are treating basics as extension internally
     var basics = {
