@@ -5,7 +5,7 @@ var Substance = require("substance");
 var _ = require("substance/helpers");
 var ContentPanel = require("../content_panel");
 var ReaderControllerMixin = require("./reader_controller_mixin");
-var ContentTools = require("../content_tools");
+// var ContentTools = require("../content_tools");
 
 // The Substance Reader Component
 // ----------------
@@ -14,7 +14,6 @@ var ReaderMixin = _.extend({}, Substance.EventEmitter.prototype, ReaderControlle
 
   componentDidMount: function() {
     var domNode = React.findDOMNode(this);
-
     $(domNode).on('click', '.container-annotation', this.handleReferenceToggle);
     $(domNode).on('click', '.annotation', this.handleReferenceToggle);
   },
@@ -26,10 +25,10 @@ var ReaderMixin = _.extend({}, Substance.EventEmitter.prototype, ReaderControlle
   },
 
   render: function() {
-    return $$('div', {className: 'reader-component', onKeyDown: this.handleApplicationKeyCombos},
+    return $$('div', {className: 'reader-component writer-component', onKeyDown: this.handleApplicationKeyCombos},
       $$('div', {className: "main-container"},
-        $$(ContentTools),
-        $$(ContentPanel)
+        // $$(ContentTools),
+        $$(ContentPanel, {containerId: this.props.contentContainer})
       ),
       $$('div', {className: "resource-container"},
         this.createContextToggles(),
