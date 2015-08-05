@@ -61,7 +61,7 @@ class ContainerComponent extends React.Component {
       return $$(ComponentClass, { key: node.id, doc: doc, node: node });
     }.bind(this)));
 
-    return $$('div', {className: 'container-nodes', contentEditable: true, spellCheck: false},
+    return $$('div', {className: 'container-nodes', contentEditable: (this.props.readOnly ? false : true), spellCheck: false},
       components
     );
   }
