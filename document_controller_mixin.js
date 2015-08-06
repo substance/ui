@@ -328,9 +328,13 @@ var DocumentControllerMixin = {
   },
 
   getInitialState: function() {
-    var defaultContextId = this.props.contextId;
-    return {"contextId": defaultContextId || "toc"};
+    // var defaultContextId = this.props.contextId;
+    // return {"contextId": defaultContextId || "toc"};
+
+    var initState = this.getStateFromRoute(this.props.route);
+    return initState;
   },
+
 
   // Internal methods
   // ----------------
@@ -366,9 +370,12 @@ var DocumentControllerMixin = {
     return true;
   },
 
-  componentWillUpdate: function(nextProps, newState) {
+  componentWillUpdate: function(nextProps, nextState) {
     var oldState = this.state;
-    this.extensionManager.handleStateChange(newState, oldState);
+    this.extensionManager.handleStateChange(nextState, oldState);
+
+    var route = this.getRouteFromState(nextState);
+    window.history.replaceState({} , '', '#'+route);
   },
 
   componentDidMount: function() {
@@ -452,6 +459,32 @@ var DocumentControllerMixin = {
       return $$('div', null, "No panels are registered");
     }
     return panelElement;
+  },
+
+
+  getStateFromRoute: function(route) {
+    var defaultContextId = this.props.contextId;
+    var state = {};
+
+    if (route) {
+      var parts = route.split(";");
+      _.each(parts, function(part) {
+        var keyVal = part.split("=");
+        state[keyVal[0]] = keyVal[1];
+      });      
+    } else {
+      state.contextId = defaultContextId || "toc";
+    }
+    return state;
+  },
+
+  getRouteFromState: function(state) {
+    var routeParts = [];
+    _.each(state, function(value, key) {
+      routeParts.push([key, value].join("="));
+    });
+
+    return routeParts.join(";");
   }
 
 };
