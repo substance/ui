@@ -6,6 +6,33 @@ var $$ = React.createElement;
 class Panel extends React.Component {
 
 
+  // We need to duplicate this from surface/panel.js
+  // -------------------
+  // DUPLICATED CODE START
+
+  getPanelOffsetForElement(el) {
+    var offsetTop = $(el).position().top;
+    return offsetTop;
+  }
+
+  scrollToNode(nodeId) {
+    // TODO make this generic
+    var panelContentEl = this.getScrollableContainer();
+
+    // Node we want to scroll to
+    var targetNode = $(panelContentEl).find("*[data-id="+nodeId+"]")[0];
+    if (targetNode) {
+      var offset = this.getPanelOffsetForElement(targetNode);
+      console.log(offset);
+      $(panelContentEl).scrollTop(offset);
+    } else {
+      console.warn(nodeId, 'not found in scrollable container');
+    }
+  }
+
+  // END
+  // -------------------
+
   getDocument() {
     var app = this.context.app;
     return app.doc;
