@@ -120,6 +120,11 @@ body,html {
 }
 
 
+.panel-content-inner {
+  position: relative; // Must be set to relative so scrollpos computations work reliable
+}
+
+
 /* Dialog Panels (aka modal panels)
 -----------------------------------------------------*/
 
