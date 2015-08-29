@@ -352,6 +352,7 @@ var DocumentControllerMixin = {
 
   componentWillMount: function() {
     this._initializeController();
+    this.extensionManager.handleStateChange(this.state);
   },
 
   componentWillUnmount: function() {
