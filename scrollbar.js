@@ -81,8 +81,10 @@ var Scrollbar = React.createClass({
     var highlights = [];
     // Compute highlights
     this.props.highlights().forEach(function(nodeId) {
-      var nodeEl = $(self.panelContentEl).find('*[data-id='+nodeId+']');
-      if (!nodeEl.length) return;
+      var nodeEl = $(self.panelContentEl).find('.subject-references .subject-reference[data-id='+nodeId+'],.annotation[data-id='+nodeId+']');
+      if (!nodeEl.length || nodeEl.length === 0) {
+        return;
+      }
 
       var top = nodeEl.position().top / self.factor;
       var height = nodeEl.outerHeight(true) / self.factor;
@@ -91,12 +93,11 @@ var Scrollbar = React.createClass({
       if (height < Scrollbar.overlayMinHeight) {
         height = Scrollbar.overlayMinHeight;
       }
-
       var data = {
         id: nodeId,
         top: top,
         height: height
-      }
+      };
       highlights.push(data);
     });
 
@@ -129,7 +130,7 @@ var Scrollbar = React.createClass({
       className: "thumb",
       style: {
       top: this.state.thumb.top,
-      height: Math.max(this.state.thumb.height, THUMB_MIN_HEIGHT)
+      height: this.state.thumb.height /*Math.max(this.state.thumb.height, THUMB_MIN_HEIGHT)*/
      }
     });
 
@@ -142,6 +143,6 @@ var Scrollbar = React.createClass({
   }
 });
 
-Scrollbar.overlayMinHeight = 5
+Scrollbar.overlayMinHeight = 1;
 
 module.exports = Scrollbar;
