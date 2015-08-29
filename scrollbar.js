@@ -87,10 +87,9 @@ var Scrollbar = React.createClass({
       var top = nodeEl.position().top / self.factor;
       var height = nodeEl.outerHeight(true) / self.factor;
 
-      // HACK: make all highlights at least 3 pxls high, and centered around the desired top pos
+      // HACK: make all highlights at least 3 pxls high
       if (height < Scrollbar.overlayMinHeight) {
         height = Scrollbar.overlayMinHeight;
-        top = top - 0.5 * Scrollbar.overlayMinHeight;
       }
 
       var data = {

@@ -23,7 +23,6 @@ class Panel extends React.Component {
     var targetNode = $(panelContentEl).find("*[data-id="+nodeId+"]")[0];
     if (targetNode) {
       var offset = this.getPanelOffsetForElement(targetNode);
-      console.log(offset);
       $(panelContentEl).scrollTop(offset);
     } else {
       console.warn(nodeId, 'not found in scrollable container');
