@@ -130,7 +130,7 @@ var Scrollbar = React.createClass({
       className: "thumb",
       style: {
       top: this.state.thumb.top,
-      height: this.state.thumb.height /*Math.max(this.state.thumb.height, THUMB_MIN_HEIGHT)*/
+      height: Math.max(this.state.thumb.height, THUMB_MIN_HEIGHT)
      }
     });
 
