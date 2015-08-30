@@ -213,15 +213,7 @@ var DocumentControllerMixin = {
     return props;
   },
 
-  getActivePanelElement: function() {
-    var panelComponent = this.componentRegistry.get(this.state.contextId);
 
-    if (panelComponent) {
-      return $$(panelComponent, this._panelPropsFromState(this.state));
-    } else {
-      console.warn("Could not find component for contextId:", this.state.contextId);
-    }
-  },
 
   getActiveModalPanelElement: function() {
     var state = this.state;
@@ -243,7 +235,6 @@ var DocumentControllerMixin = {
   getHighlightedNodes: function() {
     return this.extensionManager.getHighlightedNodes();
   },
-
 
   deleteAnnotation: function(annotationId) {
     var anno = this.doc.get(annotationId);
@@ -453,13 +444,41 @@ var DocumentControllerMixin = {
     });
   },
 
+
+  getPanelElement: function(panelName) {
+    var panelComponent = this.componentRegistry.get(panelName);
+
+    if (panelComponent) {
+      return $$(panelComponent, this._panelPropsFromState(this.state));
+    } else {
+      console.warn("Could not find component for contextId:", this.state.contextId);
+    }
+  },
+
   // Create a new panel based on current writer state (contextId)
   createContextPanel: function() {
-    var panelElement = this.getActivePanelElement();
-    if (!panelElement) {
-      return $$('div', null, "No panels are registered");
+    var contextId = this.state.contextId;
+    // Iterate over all available panels and show persistent ones and currently active ones
+
+    // var persistentPanels = this.getPersistentPanels();
+    var panelOrder = this.props.config.panelOrder;
+    var panelEls = [];
+
+    // TODO: we need to ensure persistent panels come first, so when a state switch happens the 
+    // markup does not change for those
+    _.each(panelOrder, function(panelName) {
+      // Get panel component
+      var panelComponent = this.componentRegistry.get(panelName);
+      if (panelComponent.persistent || panelComponent.contextId === contextId) {
+        panelEls.push($$(panelComponent, this._panelPropsFromState(this.state)));
+      }
+    }, this);
+
+    if (panelEls.length === 0) {
+      console.warn("Could not find component for contextId:", contextId);
     }
-    return panelElement;
+
+    return $$('div', {className: 'panels '+contextId}, panelEls);
   },
 
 
