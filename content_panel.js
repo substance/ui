@@ -137,6 +137,7 @@ var ContentPanelMixin = _.extend({}, PanelMixin, {
 
     return $$(ContentContainerClass, {
       doc: doc,
+      panel: this,
       node: doc.get(this.props.containerId),
       ref: "contentEditor"
     });
