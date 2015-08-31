@@ -499,7 +499,17 @@ var DocumentControllerMixin = {
       var parts = route.split(";");
       _.each(parts, function(part) {
         var keyVal = part.split("=");
-        state[keyVal[0]] = keyVal[1];
+
+        var stateValue;
+        try {
+          var decodedString =  window.decodeURIComponent(keyVal[1]);
+          console.log('decodedString', decodedString);
+          stateValue = JSON.parse(decodedString);
+        } catch(e) {
+          stateValue = keyVal[1];
+        }
+        
+        state[keyVal[0]] = stateValue; // keyVal[1];
       });      
     } else {
       state.contextId = defaultContextId || "toc";
@@ -510,6 +520,12 @@ var DocumentControllerMixin = {
   getRouteFromState: function(state) {
     var routeParts = [];
     _.each(state, function(value, key) {
+      // Serialize as JSON
+      if (typeof value === 'object') {
+        // console.log('###', value);
+        value = window.encodeURIComponent(JSON.stringify(value));
+
+      }
       routeParts.push([key, value].join("="));
     });
 
