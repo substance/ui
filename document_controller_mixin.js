@@ -474,6 +474,15 @@ var DocumentControllerMixin = {
       }
     }, this);
 
+    // Check for dialog panels also
+    if (panelEls.length === 0) {
+      var panelComponent = this.componentRegistry.get(contextId);
+      if (panelComponent) {
+        panelEls.push($$(panelComponent, this._panelPropsFromState(this.state)));  
+      }
+    }
+
+
     if (panelEls.length === 0) {
       console.warn("Could not find component for contextId:", contextId);
     }
