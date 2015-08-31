@@ -503,7 +503,6 @@ var DocumentControllerMixin = {
         var stateValue;
         try {
           var decodedString =  window.decodeURIComponent(keyVal[1]);
-          console.log('decodedString', decodedString);
           stateValue = JSON.parse(decodedString);
         } catch(e) {
           stateValue = keyVal[1];
